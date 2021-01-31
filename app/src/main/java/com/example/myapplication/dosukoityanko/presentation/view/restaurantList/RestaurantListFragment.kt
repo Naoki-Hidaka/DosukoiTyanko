@@ -73,7 +73,6 @@ class RestaurantListFragment : Fragment() {
                 it.item = getItem(position)
                 it.position = position.toString()
                 it.container.setOnClickListener {
-                    Timber.d("debug: onClick")
                     findNavController().navigate(TopFragmentDirections.actionTopFragmentToDetailRestaurantFragment(position))
                 }
             }
