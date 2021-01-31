@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/topFragment">
+
+    <fragment
+        android:id="@+id/topFragment"
+        android:name="com.example.myapplication.dosukoityanko.presentation.view.top.TopFragment"
+        android:label="TopFragment" >
+        <action
+            android:id="@+id/action_topFragment_to_detailRestaurantFragment"
+            app:destination="@id/detailRestaurantFragment" >
+            <argument
+                android:name="id"
+                app:argType="integer"/>
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/detailRestaurantFragment"
+        android:name="com.example.myapplication.dosukoityanko.presentation.view.detailRestaurant.DetailRestaurantFragment"
+        android:label="DetailRestaurantFragment" />
+</navigation>
