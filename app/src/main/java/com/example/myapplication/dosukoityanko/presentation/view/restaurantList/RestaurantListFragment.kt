@@ -46,6 +46,7 @@ class RestaurantListFragment : Fragment() {
                         it.progressBar.visibility = View.GONE
                         it.searchButton1.visibility = View.GONE
                         it.searchButton2.visibility = View.GONE
+                        it.fab.visibility = View.VISIBLE
                     }
                     is Resource.ApiError -> {
                     }
