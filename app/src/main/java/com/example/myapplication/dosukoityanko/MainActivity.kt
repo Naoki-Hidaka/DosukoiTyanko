@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupWithNavController(binding.toolbar, findNavController(R.id.nav_host_main))
+        setSupportActionBar(binding.toolbar)
 
     }
 }

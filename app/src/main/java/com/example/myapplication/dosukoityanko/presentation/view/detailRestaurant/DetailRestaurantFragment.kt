@@ -1,12 +1,11 @@
 package com.example.myapplication.dosukoityanko.presentation.view.detailRestaurant
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
+import com.example.myapplication.dosukoityanko.R
 import com.example.myapplication.dosukoityanko.databinding.FragmentDetailRestaurantBinding
 
 class DetailRestaurantFragment : Fragment() {
@@ -31,6 +30,12 @@ class DetailRestaurantFragment : Fragment() {
             settings.builtInZoomControls = true
             loadUrl(webViewUrl)
         }
+        setHasOptionsMenu(true)
         it.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.toolbar_menu, menu)
     }
 }
