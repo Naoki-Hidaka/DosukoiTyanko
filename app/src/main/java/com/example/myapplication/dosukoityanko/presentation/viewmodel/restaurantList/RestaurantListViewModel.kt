@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class RestaurantListViewModel(
     private val restaurantListRepository: RestaurantListRepository
@@ -24,7 +23,6 @@ class RestaurantListViewModel(
     fun getRestaurantList() {
         viewModelScope.launch {
             restaurantListRepository.getRestaurant().collect {
-                Timber.d("debug: restaurant $it")
                 _restaurantList.value = it
             }
         }
