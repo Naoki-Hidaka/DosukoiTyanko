@@ -16,6 +16,7 @@ import com.example.myapplication.dosukoityanko.databinding.ItemRestaurantListBin
 import com.example.myapplication.dosukoityanko.domain.entity.common.Resource
 import com.example.myapplication.dosukoityanko.presentation.view.top.TopFragment
 import com.example.myapplication.dosukoityanko.presentation.view.top.TopFragmentDirections
+import com.example.myapplication.dosukoityanko.presentation.view.util.transitionPage
 import com.example.myapplication.dosukoityanko.presentation.viewmodel.restaurantList.RestaurantListViewModel
 import timber.log.Timber
 
@@ -73,7 +74,7 @@ class RestaurantListFragment : Fragment() {
                 it.item = getItem(position)
                 it.position = position.toString()
                 it.container.setOnClickListener {
-                    findNavController().navigate(TopFragmentDirections.actionTopFragmentToDetailRestaurantFragment(position))
+                    transitionPage(TopFragmentDirections.actionTopFragmentToDetailRestaurantFragment(position))
                 }
             }
         }
