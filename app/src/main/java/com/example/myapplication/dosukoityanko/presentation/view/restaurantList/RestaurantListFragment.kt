@@ -37,7 +37,6 @@ class RestaurantListFragment : Fragment() {
             viewModel.restaurantList.collect { resource ->
                 when (resource) {
                     is Resource.Empty -> {
-
                     }
                     is Resource.InProgress -> {
                         it.progressBar.visibility = View.VISIBLE

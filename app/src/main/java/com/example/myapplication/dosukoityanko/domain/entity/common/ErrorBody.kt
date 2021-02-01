@@ -8,8 +8,6 @@ data class ErrorBody(
     companion object {
         fun fromJson(error: String?): ErrorBody =
             JsonHandler.converter.fromJson(error, ErrorBody::class.java)
-
-
     }
 }
 
