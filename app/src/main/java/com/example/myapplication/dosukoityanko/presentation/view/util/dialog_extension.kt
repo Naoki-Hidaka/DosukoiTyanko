@@ -17,5 +17,4 @@ fun showRetryDialog(
         .setNegativeButton("キャンセル") { dialog, _ ->
             dialog.dismiss()
         }
-
 }
