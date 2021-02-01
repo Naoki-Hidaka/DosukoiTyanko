@@ -1,5 +1,8 @@
 package com.example.myapplication.dosukoityanko.domain.entity.restaurantList
 
+import androidx.room.Entity
+
+@Entity
 data class Restaurant(
     val id: String,
     val updateDate: String,
@@ -15,14 +18,15 @@ data class Restaurant(
     val address: String,
     val tel: String,
     val telSub: String,
-    val fax: String,
     val openTime: String,
     val holiday: String,
     val access: Access,
     val parkingLots: String,
     val pr: Pr,
-    val budget: Int,
-    val party: Int,
-    val lunch: Int,
+    val budget: String,
+    val party: String,
+    val lunch: String,
     val creditCard: String
-)
+) {
+    fun formatBudget() = "${budget}円"
+}

@@ -53,8 +53,6 @@ class LikeListFragment : Fragment() {
         override fun onBindViewHolder(holder: LikeViewHolder, position: Int) {
             holder.binding.also {
                 it.lifecycleOwner = viewLifecycleOwner
-                it.item = getItem(position)
-                it.position = position.toString()
                 it.container.setOnClickListener {
                     findNavController().navigate(
                         TopFragmentDirections.actionTopFragmentToDetailRestaurantFragment(

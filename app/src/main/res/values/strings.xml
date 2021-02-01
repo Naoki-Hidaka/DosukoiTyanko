@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">どすこいちゃんこ</string>
     <string name="like">お気に入り</string>
+    <string name="price">料金：</string>
 </resources>
