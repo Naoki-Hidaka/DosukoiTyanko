@@ -1,5 +1,8 @@
 package com.example.myapplication.dosukoityanko.domain.entity.restaurantList
 
+import androidx.room.Entity
+
+@Entity
 data class Restaurant(
     val id: String,
     val updateDate: String,
