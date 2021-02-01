@@ -5,15 +5,14 @@ import android.view.*
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
+import androidx.navigation.navGraphViewModels
 import com.example.myapplication.dosukoityanko.R
 import com.example.myapplication.dosukoityanko.databinding.FragmentDetailRestaurantBinding
+import com.example.myapplication.dosukoityanko.presentation.viewmodel.restaurantList.RestaurantListViewModel
 
 class DetailRestaurantFragment : Fragment() {
 
-    companion object {
-        private const val webViewUrl =
-            "https://r.gnavi.co.jp/p458303/?ak=KxDKTtl%2BGwknQP4k%2Fpbc%2Bxt8hrFxrOsZwIF9HhekV8g%3D"
-    }
+    private val viewModel: RestaurantListViewModel by navGraphViewModels(R.id.nav_graph)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,6 +20,7 @@ class DetailRestaurantFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View = FragmentDetailRestaurantBinding.inflate(inflater, container, false).let {
         it.lifecycleOwner = viewLifecycleOwner
+        it.viewModel = viewModel
         it.webView.apply {
             webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {
@@ -29,7 +29,6 @@ class DetailRestaurantFragment : Fragment() {
             }
             settings.supportZoom()
             settings.builtInZoomControls = true
-            loadUrl(webViewUrl)
         }
         setHasOptionsMenu(true)
         it.root

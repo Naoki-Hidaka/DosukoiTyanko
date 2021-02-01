@@ -5,12 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.dosukoityanko.R
 import com.example.myapplication.dosukoityanko.databinding.FragmentRestaurantListBinding
 import com.example.myapplication.dosukoityanko.databinding.ItemRestaurantListBinding
 import com.example.myapplication.dosukoityanko.domain.entity.common.Resource
@@ -23,7 +24,7 @@ import kotlinx.coroutines.flow.collect
 
 class RestaurantListFragment : Fragment() {
 
-    private val viewModel: RestaurantListViewModel by viewModels {
+    private val viewModel: RestaurantListViewModel by navGraphViewModels(R.id.nav_graph) {
         RestaurantListViewModel.Companion.Factory()
     }
 
@@ -88,6 +89,7 @@ class RestaurantListFragment : Fragment() {
                 it.lifecycleOwner = viewLifecycleOwner
                 it.restaurant = getItem(position)
                 it.container.setOnClickListener {
+                    viewModel.selectRestaurant(position)
                     transitionPage(
                         TopFragmentDirections.actionTopFragmentToDetailRestaurantFragment(
                             position
