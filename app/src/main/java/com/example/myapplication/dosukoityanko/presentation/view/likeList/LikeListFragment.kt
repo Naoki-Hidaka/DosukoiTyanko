@@ -15,7 +15,6 @@ import com.example.myapplication.dosukoityanko.databinding.FragmentLikeListBindi
 import com.example.myapplication.dosukoityanko.databinding.ItemRestaurantListBinding
 import com.example.myapplication.dosukoityanko.presentation.view.top.TopFragmentDirections
 import com.example.myapplication.dosukoityanko.presentation.viewmodel.likeList.LikeListViewModel
-import timber.log.Timber
 
 class LikeListFragment : Fragment() {
 
@@ -30,7 +29,6 @@ class LikeListFragment : Fragment() {
     ): View = FragmentLikeListBinding.inflate(inflater, container, false).let {
         it.progressBar.visibility = View.VISIBLE
         viewModel.likeList.observe(viewLifecycleOwner) { resource ->
-            Timber.d("debug: resource $resource")
             it.progressBar.visibility = View.GONE
             likeListAdapter.submitList(resource)
         }
