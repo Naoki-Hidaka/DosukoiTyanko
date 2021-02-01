@@ -11,7 +11,8 @@ import com.example.myapplication.dosukoityanko.databinding.FragmentDetailRestaur
 class DetailRestaurantFragment : Fragment() {
 
     companion object {
-        private const val webViewUrl = "https://r.gnavi.co.jp/p458303/?ak=KxDKTtl%2BGwknQP4k%2Fpbc%2Bxt8hrFxrOsZwIF9HhekV8g%3D"
+        private const val webViewUrl =
+            "https://r.gnavi.co.jp/p458303/?ak=KxDKTtl%2BGwknQP4k%2Fpbc%2Bxt8hrFxrOsZwIF9HhekV8g%3D"
     }
 
     override fun onCreateView(

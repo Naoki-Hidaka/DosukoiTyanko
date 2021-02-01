@@ -7,5 +7,4 @@ data class ApiResponse(
     val hitPerPage: Int,
     val pageOffset: Int,
     val rest: List<Restaurant>
-) {
-}
+)
