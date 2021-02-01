@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.navGraphViewModels
 import com.example.myapplication.dosukoityanko.R
@@ -37,5 +38,16 @@ class DetailRestaurantFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.toolbar_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.star -> {
+                viewModel.clickLike {
+                    Toast.makeText(context, "お気に入りに追加しました", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        return true
     }
 }
