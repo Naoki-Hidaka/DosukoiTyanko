@@ -24,4 +24,6 @@ data class Restaurant(
     val party: String,
     val lunch: String,
     val creditCard: String
-)
+) {
+    fun formatBudget() = "${budget}円"
+}

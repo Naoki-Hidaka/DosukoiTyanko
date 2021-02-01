@@ -11,7 +11,7 @@ interface IApiType {
     suspend fun getRestaurant(
         @Query("keyid") keyId: String,
         @Query("buffet") buffet: Int = 1,
-        @Query("hit_per_page") hitPerPage: Int = 10
+        @Query("hit_per_page") hitPerPage: Int = 20
     ): Response<ApiResponse>
 
     @GET(".")

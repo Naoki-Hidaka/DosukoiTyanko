@@ -83,8 +83,7 @@ class RestaurantListFragment : Fragment() {
         override fun onBindViewHolder(holder: RestaurantViewHolder, position: Int) {
             holder.binding.also {
                 it.lifecycleOwner = viewLifecycleOwner
-                it.item = getItem(position).address
-                it.position = position.toString()
+                it.restaurant = getItem(position)
                 it.container.setOnClickListener {
                     transitionPage(
                         TopFragmentDirections.actionTopFragmentToDetailRestaurantFragment(
