@@ -15,7 +15,7 @@ fun Fragment.transitionPage(
 
 fun animationFactory() = navOptions {
     anim {
-         NavigateAnimationType.SLIDE.let {
+        NavigateAnimationType.SLIDE.let {
             enter = it.enterAnimationId
             exit = it.exitAnimationId
             popEnter = it.popEnterAnimationId

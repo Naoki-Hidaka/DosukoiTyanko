@@ -25,6 +25,4 @@ data class Restaurant(
     val party: Int,
     val lunch: Int,
     val creditCard: String
-
-) {
-}
+)

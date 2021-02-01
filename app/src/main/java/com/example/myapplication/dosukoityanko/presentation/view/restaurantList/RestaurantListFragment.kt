@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -14,11 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.dosukoityanko.databinding.FragmentRestaurantListBinding
 import com.example.myapplication.dosukoityanko.databinding.ItemRestaurantListBinding
 import com.example.myapplication.dosukoityanko.domain.entity.common.Resource
-import com.example.myapplication.dosukoityanko.presentation.view.top.TopFragment
 import com.example.myapplication.dosukoityanko.presentation.view.top.TopFragmentDirections
 import com.example.myapplication.dosukoityanko.presentation.view.util.transitionPage
 import com.example.myapplication.dosukoityanko.presentation.viewmodel.restaurantList.RestaurantListViewModel
-import timber.log.Timber
 
 class RestaurantListFragment : Fragment() {
 
@@ -32,7 +29,7 @@ class RestaurantListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View = FragmentRestaurantListBinding.inflate(inflater, container, false).let {
         viewModel.restaurantList.observe(viewLifecycleOwner) { resource ->
-            when(resource) {
+            when (resource) {
                 is Resource.InProgress -> {
                     it.progressBar.visibility = View.VISIBLE
                 }
@@ -43,10 +40,8 @@ class RestaurantListFragment : Fragment() {
                     it.searchButton2.visibility = View.GONE
                 }
                 is Resource.ApiError -> {
-
                 }
                 is Resource.NetworkError -> {
-
                 }
             }
         }
@@ -64,9 +59,16 @@ class RestaurantListFragment : Fragment() {
         it.root
     }
 
-    private inner class RestaurantListAdapter : ListAdapter<String, RestaurantViewHolder>(RestaurantListDiff()) {
+    private inner class RestaurantListAdapter :
+        ListAdapter<String, RestaurantViewHolder>(RestaurantListDiff()) {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantViewHolder =
-            RestaurantViewHolder(ItemRestaurantListBinding.inflate(LayoutInflater.from(context), parent, false))
+            RestaurantViewHolder(
+                ItemRestaurantListBinding.inflate(
+                    LayoutInflater.from(context),
+                    parent,
+                    false
+                )
+            )
 
         override fun onBindViewHolder(holder: RestaurantViewHolder, position: Int) {
             holder.binding.also {
@@ -74,13 +76,18 @@ class RestaurantListFragment : Fragment() {
                 it.item = getItem(position)
                 it.position = position.toString()
                 it.container.setOnClickListener {
-                    transitionPage(TopFragmentDirections.actionTopFragmentToDetailRestaurantFragment(position))
+                    transitionPage(
+                        TopFragmentDirections.actionTopFragmentToDetailRestaurantFragment(
+                            position
+                        )
+                    )
                 }
             }
         }
     }
 
-    private inner class RestaurantViewHolder(val binding: ItemRestaurantListBinding) : RecyclerView.ViewHolder(binding.root)
+    private inner class RestaurantViewHolder(val binding: ItemRestaurantListBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     private inner class RestaurantListDiff : DiffUtil.ItemCallback<String>() {
         override fun areItemsTheSame(oldItem: String, newItem: String): Boolean =
@@ -89,5 +96,4 @@ class RestaurantListFragment : Fragment() {
         override fun areContentsTheSame(oldItem: String, newItem: String): Boolean =
             oldItem == newItem
     }
-
 }

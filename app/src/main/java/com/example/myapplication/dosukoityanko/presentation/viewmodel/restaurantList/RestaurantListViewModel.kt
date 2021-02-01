@@ -38,5 +38,4 @@ class RestaurantListViewModel : ViewModel() {
             )
         }
     }
-
 }

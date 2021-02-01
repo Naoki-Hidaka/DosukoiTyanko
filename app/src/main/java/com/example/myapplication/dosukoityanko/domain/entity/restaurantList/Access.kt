@@ -6,5 +6,4 @@ data class Access(
     val stationExit: String,
     val walk: String,
     val note: String
-) {
-}
+)
