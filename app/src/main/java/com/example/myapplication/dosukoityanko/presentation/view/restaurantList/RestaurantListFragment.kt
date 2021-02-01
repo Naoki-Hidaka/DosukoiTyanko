@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -13,13 +14,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.dosukoityanko.databinding.FragmentRestaurantListBinding
 import com.example.myapplication.dosukoityanko.databinding.ItemRestaurantListBinding
 import com.example.myapplication.dosukoityanko.domain.entity.common.Resource
+import com.example.myapplication.dosukoityanko.domain.entity.restaurantList.Restaurant
 import com.example.myapplication.dosukoityanko.presentation.view.top.TopFragmentDirections
 import com.example.myapplication.dosukoityanko.presentation.view.util.transitionPage
 import com.example.myapplication.dosukoityanko.presentation.viewmodel.restaurantList.RestaurantListViewModel
+import kotlinx.coroutines.flow.collect
 
 class RestaurantListFragment : Fragment() {
 
-    private val viewModel: RestaurantListViewModel by viewModels()
+    private val viewModel: RestaurantListViewModel by viewModels {
+        RestaurantListViewModel.Companion.Factory()
+    }
 
     private val restaurantListAdapter by lazy { RestaurantListAdapter() }
 
@@ -28,20 +33,25 @@ class RestaurantListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View = FragmentRestaurantListBinding.inflate(inflater, container, false).let {
-        viewModel.restaurantList.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.InProgress -> {
-                    it.progressBar.visibility = View.VISIBLE
-                }
-                is Resource.Success -> {
-                    restaurantListAdapter.submitList(resource.extractData)
-                    it.progressBar.visibility = View.GONE
-                    it.searchButton1.visibility = View.GONE
-                    it.searchButton2.visibility = View.GONE
-                }
-                is Resource.ApiError -> {
-                }
-                is Resource.NetworkError -> {
+        lifecycleScope.launchWhenResumed {
+            viewModel.restaurantList.collect { resource ->
+                when (resource) {
+                    is Resource.Empty -> {
+
+                    }
+                    is Resource.InProgress -> {
+                        it.progressBar.visibility = View.VISIBLE
+                    }
+                    is Resource.Success -> {
+                        restaurantListAdapter.submitList(resource.extractData)
+                        it.progressBar.visibility = View.GONE
+                        it.searchButton1.visibility = View.GONE
+                        it.searchButton2.visibility = View.GONE
+                    }
+                    is Resource.ApiError -> {
+                    }
+                    is Resource.NetworkError -> {
+                    }
                 }
             }
         }
@@ -60,7 +70,7 @@ class RestaurantListFragment : Fragment() {
     }
 
     private inner class RestaurantListAdapter :
-        ListAdapter<String, RestaurantViewHolder>(RestaurantListDiff()) {
+        ListAdapter<Restaurant, RestaurantViewHolder>(RestaurantListDiff()) {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantViewHolder =
             RestaurantViewHolder(
                 ItemRestaurantListBinding.inflate(
@@ -73,7 +83,7 @@ class RestaurantListFragment : Fragment() {
         override fun onBindViewHolder(holder: RestaurantViewHolder, position: Int) {
             holder.binding.also {
                 it.lifecycleOwner = viewLifecycleOwner
-                it.item = getItem(position)
+                it.item = getItem(position).address
                 it.position = position.toString()
                 it.container.setOnClickListener {
                     transitionPage(
@@ -89,11 +99,11 @@ class RestaurantListFragment : Fragment() {
     private inner class RestaurantViewHolder(val binding: ItemRestaurantListBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    private inner class RestaurantListDiff : DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean =
-            oldItem.hashCode() == newItem.hashCode()
+    private inner class RestaurantListDiff : DiffUtil.ItemCallback<Restaurant>() {
+        override fun areItemsTheSame(oldItem: Restaurant, newItem: Restaurant): Boolean =
+            oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean =
+        override fun areContentsTheSame(oldItem: Restaurant, newItem: Restaurant): Boolean =
             oldItem == newItem
     }
 }

@@ -1,0 +1,23 @@
+package com.example.myapplication.dosukoityanko.domain.service
+
+import com.example.myapplication.dosukoityanko.domain.entity.common.ApiResponse
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Query
+
+interface IApiType {
+
+    @GET(".")
+    suspend fun getRestaurant(
+        @Query("keyid") keyId: String,
+        @Query("buffet") buffet: Int = 1,
+        @Query("hit_per_page") hitPerPage: Int = 10
+    ): Response<ApiResponse>
+
+    @GET(".")
+    suspend fun getRestaurant(
+        @Query("latitude") latitude: Double,
+        @Query("longitude") logntitude: Double,
+        @Query("buffet") buffet: Int = 1
+    ): Response<ApiResponse>
+}

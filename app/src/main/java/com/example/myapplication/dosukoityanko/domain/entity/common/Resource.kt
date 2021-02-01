@@ -5,6 +5,7 @@ sealed class Resource<out T : Any?> {
     data class NetworkError(val exception: Throwable) : Resource<Nothing>()
     data class ApiError(val errorBody: ErrorBody) : Resource<Nothing>()
     object InProgress : Resource<Nothing>()
+    object Empty : Resource<Nothing>()
 
     val extractData: T?
         get() = when (this) {
@@ -12,5 +13,6 @@ sealed class Resource<out T : Any?> {
             is NetworkError -> null
             is ApiError -> null
             is InProgress -> null
+            is Empty -> null
         }
 }

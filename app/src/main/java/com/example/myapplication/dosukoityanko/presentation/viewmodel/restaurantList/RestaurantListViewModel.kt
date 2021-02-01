@@ -1,41 +1,41 @@
 package com.example.myapplication.dosukoityanko.presentation.viewmodel.restaurantList
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.dosukoityanko.domain.entity.common.Resource
-import kotlinx.coroutines.delay
+import com.example.myapplication.dosukoityanko.domain.entity.restaurantList.Restaurant
+import com.example.myapplication.dosukoityanko.domain.repository.restaurantList.RestaurantListRepository
+import com.example.myapplication.dosukoityanko.domain.repository.restaurantList.RestaurantListRepositoryImpl
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
-class RestaurantListViewModel : ViewModel() {
+class RestaurantListViewModel(
+    private val restaurantListRepository: RestaurantListRepository
+) : ViewModel() {
 
-    private val _restaurantList = MutableLiveData<Resource<List<String>>>()
-    val restaurantList: LiveData<Resource<List<String>>> = _restaurantList
+    private val _restaurantList = MutableStateFlow<Resource<List<Restaurant>>>(Resource.Empty)
+    val restaurantList: StateFlow<Resource<List<Restaurant>>> = _restaurantList
 
     fun getRestaurantList() {
         viewModelScope.launch {
-            _restaurantList.value = Resource.InProgress
-            delay(1000)
-            _restaurantList.value = Resource.Success(
-                listOf(
-                    "ピカチュウ",
-                    "カイリュー",
-                    "ヤドラン",
-                    "ピジョン",
-                    "コダック",
-                    "コラッタ",
-                    "ズバット",
-                    "ギャロップ",
-                    "サンダース",
-                    "メノクラゲ",
-                    "パウワウ",
-                    "カラカラ",
-                    "タマタマ",
-                    "ガラガラ",
-                    "フシギダネ"
-                )
-            )
+            restaurantListRepository.getRestaurant().collect {
+                Timber.d("debug: restaurant $it")
+                _restaurantList.value = it
+            }
+        }
+    }
+
+    companion object {
+        class Factory(
+            private val restaurantListRepository: RestaurantListRepository = RestaurantListRepositoryImpl
+        ) : ViewModelProvider.NewInstanceFactory() {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel?> create(modelClass: Class<T>) =
+                RestaurantListViewModel(restaurantListRepository) as T
         }
     }
 }
