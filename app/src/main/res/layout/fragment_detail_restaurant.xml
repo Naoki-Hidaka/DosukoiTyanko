@@ -4,6 +4,10 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.example.myapplication.dosukoityanko.presentation.viewmodel.restaurantList.RestaurantListViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,7 +17,8 @@
         <WebView
             android:id="@+id/webView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:url="@{viewModel.selectedRestaurant.urlMobile}" />
 
         <ProgressBar
             android:id="@+id/progressBar"
