@@ -16,6 +16,7 @@ import com.example.myapplication.dosukoityanko.databinding.ItemRestaurantListBin
 import com.example.myapplication.dosukoityanko.domain.entity.common.Resource
 import com.example.myapplication.dosukoityanko.domain.entity.restaurantList.Restaurant
 import com.example.myapplication.dosukoityanko.presentation.view.top.TopFragmentDirections
+import com.example.myapplication.dosukoityanko.presentation.view.util.showRetryDialog
 import com.example.myapplication.dosukoityanko.presentation.view.util.transitionPage
 import com.example.myapplication.dosukoityanko.presentation.viewmodel.restaurantList.RestaurantListViewModel
 import kotlinx.coroutines.flow.collect
@@ -49,8 +50,10 @@ class RestaurantListFragment : Fragment() {
                         it.fab.visibility = View.VISIBLE
                     }
                     is Resource.ApiError -> {
+                        showRetryDialog(requireContext(), viewModel::getRestaurantList)
                     }
                     is Resource.NetworkError -> {
+                        showRetryDialog(requireContext(), viewModel::getRestaurantList)
                     }
                 }
             }
