@@ -16,6 +16,7 @@ import com.example.myapplication.dosukoityanko.databinding.FragmentRestaurantLis
 import com.example.myapplication.dosukoityanko.databinding.ItemRestaurantListBinding
 import com.example.myapplication.dosukoityanko.domain.entity.common.Resource
 import com.example.myapplication.dosukoityanko.domain.entity.restaurantList.Restaurant
+import com.example.myapplication.dosukoityanko.domain.service.MyApplication
 import com.example.myapplication.dosukoityanko.presentation.view.top.TopFragmentDirections
 import com.example.myapplication.dosukoityanko.presentation.view.util.showRetryDialog
 import com.example.myapplication.dosukoityanko.presentation.view.util.transitionPage
@@ -23,9 +24,10 @@ import com.example.myapplication.dosukoityanko.presentation.viewmodel.restaurant
 import kotlinx.coroutines.flow.collect
 
 class RestaurantListFragment : Fragment() {
-
     private val viewModel: RestaurantListViewModel by navGraphViewModels(R.id.nav_graph) {
-        RestaurantListViewModel.Companion.Factory()
+        RestaurantListViewModel.Companion.Factory(
+            MyApplication.db.likeRestaurantDao()
+        )
     }
 
     private val restaurantListAdapter by lazy { RestaurantListAdapter() }

@@ -3,6 +3,7 @@ package com.example.myapplication.dosukoityanko.presentation.viewmodel.restauran
 import androidx.lifecycle.*
 import com.example.myapplication.dosukoityanko.domain.entity.common.Resource
 import com.example.myapplication.dosukoityanko.domain.entity.restaurantList.Restaurant
+import com.example.myapplication.dosukoityanko.domain.repository.likeList.LikeRestaurantDao
 import com.example.myapplication.dosukoityanko.domain.repository.restaurantList.RestaurantListRepository
 import com.example.myapplication.dosukoityanko.domain.repository.restaurantList.RestaurantListRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,9 +33,21 @@ class RestaurantListViewModel(
         _selectedRestaurant.value = restaurantList.value.extractData?.get(position)
     }
 
+    fun clickLike(callback: () -> Unit) {
+        selectedRestaurant.value?.let {
+            viewModelScope.launch {
+                restaurantListRepository.addRestaurant(it)
+                callback()
+            }
+        }
+    }
+
     companion object {
         class Factory(
-            private val restaurantListRepository: RestaurantListRepository = RestaurantListRepositoryImpl
+            private val likeRestaurantDao: LikeRestaurantDao,
+            private val restaurantListRepository: RestaurantListRepository = RestaurantListRepositoryImpl(
+                likeRestaurantDao
+            )
         ) : ViewModelProvider.NewInstanceFactory() {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel?> create(modelClass: Class<T>) =
