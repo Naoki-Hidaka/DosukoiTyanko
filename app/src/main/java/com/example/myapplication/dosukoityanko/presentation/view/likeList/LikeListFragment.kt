@@ -62,15 +62,16 @@ class LikeListFragment : Fragment() {
 
         override fun onBindViewHolder(holder: LikeViewHolder, position: Int) {
             holder.binding.also {
+                val data = currentList[position]
                 it.lifecycleOwner = viewLifecycleOwner
-                it.restaurant = getItem(position)
+                it.restaurant = data
                 it.container.setOnClickListener {
                     viewModel.selectRestaurant(position)
                     transitionPage(TopFragmentDirections.actionTopFragmentToLikeDetailFragment())
                 }
                 it.container.setOnLongClickListener {
                     confirmDialog(requireContext(), "本当に削除しますか？") {
-                        viewModel.deleteRestaurant(getItem(position))
+                        viewModel.deleteRestaurant(data)
                     }
                     true
                 }

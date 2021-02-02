@@ -33,11 +33,7 @@ class RestaurantListViewModel(
     fun getRestaurantBelowThousand() {
         viewModelScope.launch {
             restaurantListRepository.getRestaurantBelowThousand().collect {
-                if (it is Resource.Success) {
-                    it.extractData?.forEach {
-                        Timber.d("debug: thousand ${it.budget}")
-                    }
-                }
+                //TODO: 実装予定
             }
         }
     }
@@ -45,11 +41,7 @@ class RestaurantListViewModel(
     fun getRestaurantBelowThreeThousand() {
         viewModelScope.launch {
             restaurantListRepository.getRestaurantBelowThreeThousand().collect {
-                if (it is Resource.Success) {
-                    it.extractData?.forEach {
-                        Timber.d("debug: three thousand ${it.budget}")
-                    }
-                }
+                //TODO: 実装予定
             }
         }
     }
