@@ -27,6 +27,12 @@ class LikeListViewModel(
         }
     }
 
+    fun deleteRestaurant(restaurant: Restaurant) {
+        viewModelScope.launch {
+            likeRestaurantRepository.deleteRestaurant(restaurant)
+        }
+    }
+
     companion object {
         class Factory(
             likeRestaurantDao: LikeRestaurantDao,

@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -16,7 +15,7 @@ import com.example.myapplication.dosukoityanko.databinding.FragmentLikeListBindi
 import com.example.myapplication.dosukoityanko.databinding.ItemRestaurantListBinding
 import com.example.myapplication.dosukoityanko.domain.entity.restaurantList.Restaurant
 import com.example.myapplication.dosukoityanko.domain.service.MyApplication
-import com.example.myapplication.dosukoityanko.presentation.view.top.TopFragmentDirections
+import com.example.myapplication.dosukoityanko.presentation.view.util.confirmDialog
 import com.example.myapplication.dosukoityanko.presentation.viewmodel.likeList.LikeListViewModel
 import kotlinx.coroutines.flow.collect
 
@@ -63,11 +62,17 @@ class LikeListFragment : Fragment() {
                 it.lifecycleOwner = viewLifecycleOwner
                 it.restaurant = getItem(position)
                 it.container.setOnClickListener {
-                    findNavController().navigate(
-                        TopFragmentDirections.actionTopFragmentToDetailRestaurantFragment(
-                            position
-                        )
-                    )
+//                    findNavController().navigate(
+//                        TopFragmentDirections.actionTopFragmentToDetailRestaurantFragment(
+//                            position
+//                        )
+//                    )
+                }
+                it.container.setOnLongClickListener {
+                    confirmDialog(requireContext(), "本当に削除しますか？") {
+                        viewModel.deleteRestaurant(getItem(position))
+                    }
+                    true
                 }
             }
         }
