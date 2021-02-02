@@ -24,7 +24,6 @@ import com.example.myapplication.dosukoityanko.presentation.viewmodel.restaurant
 import kotlinx.coroutines.flow.collect
 
 class RestaurantListFragment : Fragment() {
-    
     private val viewModel: RestaurantListViewModel by navGraphViewModels(R.id.nav_graph) {
         RestaurantListViewModel.Companion.Factory(
             MyApplication.db.likeRestaurantDao()

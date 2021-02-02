@@ -20,5 +20,4 @@ interface LikeRestaurantDao {
 
     @Delete
     suspend fun deleteRestaurant(restaurant: Restaurant)
-
 }
