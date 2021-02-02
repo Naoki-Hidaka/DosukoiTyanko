@@ -5,23 +5,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.dosukoityanko.R
 import com.example.myapplication.dosukoityanko.databinding.FragmentLikeListBinding
 import com.example.myapplication.dosukoityanko.databinding.ItemRestaurantListBinding
 import com.example.myapplication.dosukoityanko.domain.entity.restaurantList.Restaurant
 import com.example.myapplication.dosukoityanko.domain.service.MyApplication
+import com.example.myapplication.dosukoityanko.presentation.view.top.TopFragmentDirections
 import com.example.myapplication.dosukoityanko.presentation.view.util.confirmDialog
+import com.example.myapplication.dosukoityanko.presentation.view.util.transitionPage
 import com.example.myapplication.dosukoityanko.presentation.viewmodel.likeList.LikeListViewModel
 import kotlinx.coroutines.flow.collect
 
 class LikeListFragment : Fragment() {
 
-    private val viewModel: LikeListViewModel by viewModels {
+    private val viewModel: LikeListViewModel by navGraphViewModels(R.id.nav_graph) {
         LikeListViewModel.Companion.Factory(
             MyApplication.db.likeRestaurantDao()
         )
@@ -62,11 +65,8 @@ class LikeListFragment : Fragment() {
                 it.lifecycleOwner = viewLifecycleOwner
                 it.restaurant = getItem(position)
                 it.container.setOnClickListener {
-//                    findNavController().navigate(
-//                        TopFragmentDirections.actionTopFragmentToDetailRestaurantFragment(
-//                            position
-//                        )
-//                    )
+                    viewModel.selectRestaurant(position)
+                    transitionPage(TopFragmentDirections.actionTopFragmentToLikeDetailFragment())
                 }
                 it.container.setOnLongClickListener {
                     confirmDialog(requireContext(), "本当に削除しますか？") {

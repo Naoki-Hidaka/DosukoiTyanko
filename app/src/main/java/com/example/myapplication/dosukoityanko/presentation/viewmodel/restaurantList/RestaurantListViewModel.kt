@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class RestaurantListViewModel(
     private val restaurantListRepository: RestaurantListRepository
@@ -25,6 +26,30 @@ class RestaurantListViewModel(
         viewModelScope.launch {
             restaurantListRepository.getRestaurant().collect {
                 _restaurantList.value = it
+            }
+        }
+    }
+
+    fun getRestaurantBelowThousand() {
+        viewModelScope.launch {
+            restaurantListRepository.getRestaurantBelowThousand().collect {
+                if (it is Resource.Success) {
+                    it.extractData?.forEach {
+                        Timber.d("debug: thousand ${it.budget}")
+                    }
+                }
+            }
+        }
+    }
+
+    fun getRestaurantBelowThreeThousand() {
+        viewModelScope.launch {
+            restaurantListRepository.getRestaurantBelowThreeThousand().collect {
+                if (it is Resource.Success) {
+                    it.extractData?.forEach {
+                        Timber.d("debug: three thousand ${it.budget}")
+                    }
+                }
             }
         }
     }
