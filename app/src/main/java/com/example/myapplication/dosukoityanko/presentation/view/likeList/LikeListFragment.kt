@@ -46,6 +46,7 @@ class LikeListFragment : Fragment() {
             adapter = likeListAdapter
             layoutManager = LinearLayoutManager(context)
         }
+
         it.lifecycleOwner = viewLifecycleOwner
         it.root
     }

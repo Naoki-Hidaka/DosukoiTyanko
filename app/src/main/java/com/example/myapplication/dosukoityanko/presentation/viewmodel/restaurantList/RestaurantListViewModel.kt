@@ -1,5 +1,6 @@
 package com.example.myapplication.dosukoityanko.presentation.viewmodel.restaurantList
 
+import android.view.View
 import androidx.lifecycle.*
 import com.example.myapplication.dosukoityanko.domain.entity.common.Resource
 import com.example.myapplication.dosukoityanko.domain.entity.restaurantList.Restaurant
@@ -22,6 +23,40 @@ class RestaurantListViewModel(
     private val _selectedRestaurant = MutableLiveData<Restaurant>()
     val selectedRestaurant: LiveData<Restaurant> = _selectedRestaurant
 
+    private val _searchButtonState = MutableLiveData(true)
+    val searchButtonState: LiveData<Boolean> = _searchButtonState
+
+    private val _handButtonState = MutableLiveData(false)
+    val handButtonState: LiveData<Boolean> = _handButtonState
+
+    val onSearchButtonClick = View.OnClickListener {
+        if (_searchButtonState.value == true) {
+            optionFabOpen()
+        } else {
+            optionFabClose()
+        }
+    }
+
+    val onRedHandButtonClick = View.OnClickListener {
+        optionFabClose()
+        getRestaurantBelowThousand()
+    }
+
+    val onBlackHandButtonClick = View.OnClickListener {
+        optionFabClose()
+        getRestaurantBelowThreeThousand()
+    }
+
+    private fun optionFabOpen() {
+        _searchButtonState.value = false
+        _handButtonState.value = true
+    }
+
+    private fun optionFabClose() {
+        _searchButtonState.value = true
+        _handButtonState.value = false
+    }
+
     fun getRestaurantList() {
         viewModelScope.launch {
             restaurantListRepository.getRestaurant().collect {
@@ -30,18 +65,18 @@ class RestaurantListViewModel(
         }
     }
 
-    fun getRestaurantBelowThousand() {
+    private fun getRestaurantBelowThousand() {
         viewModelScope.launch {
             restaurantListRepository.getRestaurantBelowThousand().collect {
-                // TODO: 実装予定
+                _restaurantList.value = it
             }
         }
     }
 
-    fun getRestaurantBelowThreeThousand() {
+    private fun getRestaurantBelowThreeThousand() {
         viewModelScope.launch {
             restaurantListRepository.getRestaurantBelowThreeThousand().collect {
-                // TODO: 実装予定
+                _restaurantList.value = it
             }
         }
     }
