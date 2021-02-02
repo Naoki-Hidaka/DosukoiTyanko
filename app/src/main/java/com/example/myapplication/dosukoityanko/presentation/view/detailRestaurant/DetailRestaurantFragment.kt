@@ -43,8 +43,11 @@ class DetailRestaurantFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.star -> {
-                viewModel.clickLike {
-                    Toast.makeText(context, "お気に入りに追加しました", Toast.LENGTH_SHORT).show()
+                viewModel.clickLike({
+                    Toast.makeText(context, "お気に入り追加しました", Toast.LENGTH_SHORT).show()
+                }
+                ) {
+                    Toast.makeText(context, "お気に入り追加に失敗しました", Toast.LENGTH_SHORT).show()
                 }
             }
         }

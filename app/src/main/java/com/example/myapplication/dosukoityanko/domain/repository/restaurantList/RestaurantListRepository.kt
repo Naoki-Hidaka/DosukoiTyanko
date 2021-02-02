@@ -12,5 +12,9 @@ interface RestaurantListRepository {
 
     suspend fun getRestaurantBelowThreeThousand(): Flow<Resource<List<Restaurant>>>
 
-    suspend fun addRestaurant(restaurant: Restaurant)
+    suspend fun addRestaurant(
+        restaurant: Restaurant,
+        callback: () -> Unit,
+        fallback: (Throwable) -> Unit
+    )
 }
