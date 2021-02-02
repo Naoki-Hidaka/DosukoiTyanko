@@ -33,7 +33,7 @@ class RestaurantListViewModel(
     fun getRestaurantBelowThousand() {
         viewModelScope.launch {
             restaurantListRepository.getRestaurantBelowThousand().collect {
-                //TODO: 実装予定
+                // TODO: 実装予定
             }
         }
     }
@@ -41,7 +41,7 @@ class RestaurantListViewModel(
     fun getRestaurantBelowThreeThousand() {
         viewModelScope.launch {
             restaurantListRepository.getRestaurantBelowThreeThousand().collect {
-                //TODO: 実装予定
+                // TODO: 実装予定
             }
         }
     }
@@ -60,7 +60,6 @@ class RestaurantListViewModel(
                     Timber.d("debug: error occurred")
                     fallback()
                 }
-
             }
         }
     }
