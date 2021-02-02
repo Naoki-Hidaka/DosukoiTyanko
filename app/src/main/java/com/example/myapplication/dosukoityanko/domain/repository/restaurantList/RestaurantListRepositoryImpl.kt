@@ -92,7 +92,19 @@ class RestaurantListRepositoryImpl(
                 }
         }.flowOn(Dispatchers.IO)
 
-    override suspend fun addRestaurant(restaurant: Restaurant) {
-        likeRestaurantDao.addRestaurant(restaurant)
+    override suspend fun addRestaurant(
+        restaurant: Restaurant,
+        callback: () -> Unit,
+        fallback: (Throwable) -> Unit
+    ) {
+        runCatching {
+            likeRestaurantDao.addRestaurant(restaurant)
+        }
+            .onSuccess {
+                callback()
+            }
+            .onFailure {
+                fallback(it)
+            }
     }
 }

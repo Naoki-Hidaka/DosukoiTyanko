@@ -33,11 +33,7 @@ class RestaurantListViewModel(
     fun getRestaurantBelowThousand() {
         viewModelScope.launch {
             restaurantListRepository.getRestaurantBelowThousand().collect {
-                if (it is Resource.Success) {
-                    it.extractData?.forEach {
-                        Timber.d("debug: thousand ${it.budget}")
-                    }
-                }
+                // TODO: 実装予定
             }
         }
     }
@@ -45,11 +41,7 @@ class RestaurantListViewModel(
     fun getRestaurantBelowThreeThousand() {
         viewModelScope.launch {
             restaurantListRepository.getRestaurantBelowThreeThousand().collect {
-                if (it is Resource.Success) {
-                    it.extractData?.forEach {
-                        Timber.d("debug: three thousand ${it.budget}")
-                    }
-                }
+                // TODO: 実装予定
             }
         }
     }
@@ -58,11 +50,16 @@ class RestaurantListViewModel(
         _selectedRestaurant.value = restaurantList.value.extractData?.get(position)
     }
 
-    fun clickLike(callback: () -> Unit) {
+    fun clickLike(
+        callback: () -> Unit,
+        fallback: () -> Unit
+    ) {
         selectedRestaurant.value?.let {
             viewModelScope.launch {
-                restaurantListRepository.addRestaurant(it)
-                callback()
+                restaurantListRepository.addRestaurant(it, callback) {
+                    Timber.d("debug: error occurred")
+                    fallback()
+                }
             }
         }
     }
