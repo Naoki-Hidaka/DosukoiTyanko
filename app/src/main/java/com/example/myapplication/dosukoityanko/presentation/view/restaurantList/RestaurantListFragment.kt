@@ -67,9 +67,11 @@ class RestaurantListFragment : Fragment() {
         }
         it.searchButton1.setOnClickListener {
             viewModel.getRestaurantList()
+            viewModel.getRestaurantBelowThousand()
         }
         it.searchButton2.setOnClickListener {
             viewModel.getRestaurantList()
+            viewModel.getRestaurantBelowThreeThousand()
         }
         it.lifecycleOwner = viewLifecycleOwner
         it.root
@@ -93,9 +95,7 @@ class RestaurantListFragment : Fragment() {
                 it.container.setOnClickListener {
                     viewModel.selectRestaurant(position)
                     transitionPage(
-                        TopFragmentDirections.actionTopFragmentToDetailRestaurantFragment(
-                            position
-                        )
+                        TopFragmentDirections.actionTopFragmentToDetailRestaurantFragment()
                     )
                 }
             }

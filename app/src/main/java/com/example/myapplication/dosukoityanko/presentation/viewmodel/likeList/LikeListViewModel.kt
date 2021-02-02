@@ -1,8 +1,6 @@
 package com.example.myapplication.dosukoityanko.presentation.viewmodel.likeList
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.myapplication.dosukoityanko.domain.entity.restaurantList.Restaurant
 import com.example.myapplication.dosukoityanko.domain.repository.likeList.LikeRestaurantDao
 import com.example.myapplication.dosukoityanko.domain.repository.likeList.LikeRestaurantRepository
@@ -19,12 +17,19 @@ class LikeListViewModel(
     private val _likeList: MutableStateFlow<List<Restaurant>> = MutableStateFlow(emptyList())
     val likeList: StateFlow<List<Restaurant>> = _likeList
 
+    private val _selectedRestaurant = MutableLiveData<Restaurant>()
+    val selectedRestaurant: LiveData<Restaurant> = _selectedRestaurant
+
     init {
         viewModelScope.launch {
             likeRestaurantRepository.getAllRestaurant().collect {
                 _likeList.value = it
             }
         }
+    }
+
+    fun selectRestaurant(position: Int) {
+        _selectedRestaurant.value = likeList.value[position]
     }
 
     fun deleteRestaurant(restaurant: Restaurant) {
