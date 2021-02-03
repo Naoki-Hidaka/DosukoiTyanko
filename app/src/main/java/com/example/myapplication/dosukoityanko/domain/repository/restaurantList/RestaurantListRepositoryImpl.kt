@@ -52,7 +52,7 @@ class RestaurantListRepositoryImpl(
                 if (it.isSuccessful) {
                     it.body()?.rest?.let {
                         it.dropWhile {
-                            it.budget?.toInt() ?: 0 > 1000
+                            it.budget?.toInt() ?: 0 > 3000
                         }.let {
                             emit(Resource.Success(it))
                         }
@@ -78,7 +78,7 @@ class RestaurantListRepositoryImpl(
                     if (it.isSuccessful) {
                         it.body()?.rest?.let {
                             it.dropWhile {
-                                it.budget?.toInt() ?: 0 > 3000
+                                it.budget?.toInt() ?: 0 > 5000
                             }.let {
                                 emit(Resource.Success(it))
                             }

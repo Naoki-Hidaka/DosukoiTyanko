@@ -24,6 +24,7 @@ import com.example.myapplication.dosukoityanko.presentation.viewmodel.restaurant
 import kotlinx.coroutines.flow.collect
 
 class RestaurantListFragment : Fragment() {
+
     private val viewModel: RestaurantListViewModel by navGraphViewModels(R.id.nav_graph) {
         RestaurantListViewModel.Companion.Factory(
             MyApplication.db.likeRestaurantDao()
@@ -41,16 +42,16 @@ class RestaurantListFragment : Fragment() {
             viewModel.restaurantList.collect { resource ->
                 when (resource) {
                     is Resource.Empty -> {
+                        it.emptyImage.visibility = View.VISIBLE
                     }
                     is Resource.InProgress -> {
                         it.progressBar.visibility = View.VISIBLE
+                        it.emptyImage.visibility = View.GONE
                     }
                     is Resource.Success -> {
                         restaurantListAdapter.submitList(resource.extractData)
                         it.progressBar.visibility = View.GONE
-                        it.searchButton1.visibility = View.GONE
-                        it.searchButton2.visibility = View.GONE
-                        it.fab.visibility = View.VISIBLE
+                        it.searchButton.visibility = View.VISIBLE
                     }
                     is Resource.ApiError -> {
                         showRetryDialog(requireContext(), viewModel::getRestaurantList)
@@ -65,14 +66,7 @@ class RestaurantListFragment : Fragment() {
             adapter = restaurantListAdapter
             layoutManager = LinearLayoutManager(context)
         }
-        it.searchButton1.setOnClickListener {
-            viewModel.getRestaurantList()
-            viewModel.getRestaurantBelowThousand()
-        }
-        it.searchButton2.setOnClickListener {
-            viewModel.getRestaurantList()
-            viewModel.getRestaurantBelowThreeThousand()
-        }
+        it.viewModel = viewModel
         it.lifecycleOwner = viewLifecycleOwner
         it.root
     }
