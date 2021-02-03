@@ -16,8 +16,11 @@ interface IApiType {
 
     @GET(".")
     suspend fun getRestaurant(
+        @Query("keyid") keyId: String,
         @Query("latitude") latitude: Double,
-        @Query("longitude") logntitude: Double,
-        @Query("buffet") buffet: Int = 1
+        @Query("longitude") longitude: Double,
+        @Query("buffet") buffet: Int = 1,
+        @Query("range") range: Int = 3,
+        @Query("hit_per_page") hitPerPage: Int = 20
     ): Response<ApiResponse>
 }

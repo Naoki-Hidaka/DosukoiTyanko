@@ -1,5 +1,7 @@
 package com.example.myapplication.dosukoityanko.presentation.viewmodel.restaurantList
 
+import android.app.Application
+import android.location.Location
 import android.view.View
 import androidx.lifecycle.*
 import com.example.myapplication.dosukoityanko.domain.entity.common.Resource
@@ -11,17 +13,20 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class RestaurantListViewModel(
+    application: Application,
     private val restaurantListRepository: RestaurantListRepository
-) : ViewModel() {
+) : AndroidViewModel(application) {
 
     private val _restaurantList = MutableStateFlow<Resource<List<Restaurant>>>(Resource.Empty)
     val restaurantList: StateFlow<Resource<List<Restaurant>>> = _restaurantList
 
     private val _selectedRestaurant = MutableLiveData<Restaurant>()
     val selectedRestaurant: LiveData<Restaurant> = _selectedRestaurant
+
+    private val _emptyImageState = MutableLiveData(true)
+    val emptyImageState: LiveData<Boolean> = _emptyImageState
 
     private val _searchButtonState = MutableLiveData(true)
     val searchButtonState: LiveData<Boolean> = _searchButtonState
@@ -37,14 +42,8 @@ class RestaurantListViewModel(
         }
     }
 
-    val onRedHandButtonClick = View.OnClickListener {
-        optionFabClose()
-        getRestaurantBelowThousand()
-    }
-
-    val onBlackHandButtonClick = View.OnClickListener {
-        optionFabClose()
-        getRestaurantBelowThreeThousand()
+    fun setEmptyImageState(visibleState: Boolean) {
+        _emptyImageState.value = visibleState
     }
 
     private fun optionFabOpen() {
@@ -58,6 +57,7 @@ class RestaurantListViewModel(
     }
 
     fun getRestaurantList() {
+        optionFabClose()
         viewModelScope.launch {
             restaurantListRepository.getRestaurant().collect {
                 _restaurantList.value = it
@@ -65,17 +65,19 @@ class RestaurantListViewModel(
         }
     }
 
-    private fun getRestaurantBelowThousand() {
+    fun getRestaurantBelowThreeThousand(location: Location) {
+        optionFabClose()
         viewModelScope.launch {
-            restaurantListRepository.getRestaurantBelowThousand().collect {
+            restaurantListRepository.getRestaurantBelowThreeThousand(location).collect {
                 _restaurantList.value = it
             }
         }
     }
 
-    private fun getRestaurantBelowThreeThousand() {
+    fun getRestaurantBelowFiveThousand(location: Location) {
+        optionFabClose()
         viewModelScope.launch {
-            restaurantListRepository.getRestaurantBelowThreeThousand().collect {
+            restaurantListRepository.getRestaurantBelowFiveThousand(location).collect {
                 _restaurantList.value = it
             }
         }
@@ -92,7 +94,6 @@ class RestaurantListViewModel(
         selectedRestaurant.value?.let {
             viewModelScope.launch {
                 restaurantListRepository.addRestaurant(it, callback) {
-                    Timber.d("debug: error occurred")
                     fallback()
                 }
             }
@@ -101,6 +102,7 @@ class RestaurantListViewModel(
 
     companion object {
         class Factory(
+            private val application: Application?,
             private val likeRestaurantDao: LikeRestaurantDao,
             private val restaurantListRepository: RestaurantListRepository = RestaurantListRepositoryImpl(
                 likeRestaurantDao
@@ -108,7 +110,7 @@ class RestaurantListViewModel(
         ) : ViewModelProvider.NewInstanceFactory() {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel?> create(modelClass: Class<T>) =
-                RestaurantListViewModel(restaurantListRepository) as T
+                RestaurantListViewModel(application!!, restaurantListRepository) as T
         }
     }
 }
