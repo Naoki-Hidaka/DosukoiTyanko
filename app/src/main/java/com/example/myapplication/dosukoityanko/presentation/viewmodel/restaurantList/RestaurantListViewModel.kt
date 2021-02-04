@@ -1,6 +1,5 @@
 package com.example.myapplication.dosukoityanko.presentation.viewmodel.restaurantList
 
-import android.app.Application
 import android.location.Location
 import android.view.View
 import androidx.lifecycle.*
@@ -15,9 +14,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class RestaurantListViewModel(
-    application: Application,
     private val restaurantListRepository: RestaurantListRepository
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
     private val _restaurantList = MutableStateFlow<Resource<List<Restaurant>>>(Resource.Empty)
     val restaurantList: StateFlow<Resource<List<Restaurant>>> = _restaurantList
@@ -102,7 +100,6 @@ class RestaurantListViewModel(
 
     companion object {
         class Factory(
-            private val application: Application?,
             private val likeRestaurantDao: LikeRestaurantDao,
             private val restaurantListRepository: RestaurantListRepository = RestaurantListRepositoryImpl(
                 likeRestaurantDao
@@ -110,7 +107,7 @@ class RestaurantListViewModel(
         ) : ViewModelProvider.NewInstanceFactory() {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel?> create(modelClass: Class<T>) =
-                RestaurantListViewModel(application!!, restaurantListRepository) as T
+                RestaurantListViewModel(restaurantListRepository) as T
         }
     }
 }
