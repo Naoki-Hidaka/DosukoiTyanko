@@ -2,18 +2,22 @@ package com.example.myapplication.dosukoityanko.presentation.viewmodel.restauran
 
 import android.location.Location
 import android.view.View
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.myapplication.dosukoityanko.domain.entity.common.Resource
 import com.example.myapplication.dosukoityanko.domain.entity.restaurantList.Restaurant
-import com.example.myapplication.dosukoityanko.domain.repository.likeList.LikeRestaurantDao
 import com.example.myapplication.dosukoityanko.domain.repository.restaurantList.RestaurantListRepository
-import com.example.myapplication.dosukoityanko.domain.repository.restaurantList.RestaurantListRepositoryImpl
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RestaurantListViewModel(
+@HiltViewModel
+class RestaurantListViewModel @Inject constructor(
     private val restaurantListRepository: RestaurantListRepository
 ) : ViewModel() {
 
@@ -95,19 +99,6 @@ class RestaurantListViewModel(
                     fallback()
                 }
             }
-        }
-    }
-
-    companion object {
-        class Factory(
-            private val likeRestaurantDao: LikeRestaurantDao,
-            private val restaurantListRepository: RestaurantListRepository = RestaurantListRepositoryImpl(
-                likeRestaurantDao
-            )
-        ) : ViewModelProvider.NewInstanceFactory() {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel?> create(modelClass: Class<T>) =
-                RestaurantListViewModel(restaurantListRepository) as T
         }
     }
 }

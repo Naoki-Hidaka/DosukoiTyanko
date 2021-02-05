@@ -10,8 +10,8 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -21,7 +21,6 @@ import com.example.myapplication.dosukoityanko.databinding.FragmentRestaurantLis
 import com.example.myapplication.dosukoityanko.databinding.ItemRestaurantListBinding
 import com.example.myapplication.dosukoityanko.domain.entity.common.Resource
 import com.example.myapplication.dosukoityanko.domain.entity.restaurantList.Restaurant
-import com.example.myapplication.dosukoityanko.domain.service.MyApplication
 import com.example.myapplication.dosukoityanko.presentation.view.top.TopFragmentDirections
 import com.example.myapplication.dosukoityanko.presentation.view.util.showRetryDialog
 import com.example.myapplication.dosukoityanko.presentation.view.util.transitionPage
@@ -30,16 +29,13 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
+@AndroidEntryPoint
 class RestaurantListFragment : Fragment() {
 
-    private val viewModel: RestaurantListViewModel by navGraphViewModels(R.id.nav_graph) {
-        RestaurantListViewModel.Companion.Factory(
-            activity?.application,
-            MyApplication.db.likeRestaurantDao()
-        )
-    }
+    private val viewModel: RestaurantListViewModel by hiltNavGraphViewModels(R.id.nav_graph)
 
     private val restaurantListAdapter by lazy { RestaurantListAdapter() }
 

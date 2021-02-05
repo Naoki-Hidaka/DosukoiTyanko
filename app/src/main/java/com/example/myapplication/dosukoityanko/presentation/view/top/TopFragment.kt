@@ -12,7 +12,9 @@ import com.example.myapplication.dosukoityanko.databinding.FragmentTopBinding
 import com.example.myapplication.dosukoityanko.presentation.view.likeList.LikeListFragment
 import com.example.myapplication.dosukoityanko.presentation.view.restaurantList.RestaurantListFragment
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TopFragment : Fragment() {
 
     data class FragmentParams(
