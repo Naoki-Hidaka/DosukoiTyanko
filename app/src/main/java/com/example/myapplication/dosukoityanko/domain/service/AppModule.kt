@@ -3,6 +3,8 @@ package com.example.myapplication.dosukoityanko.domain.service
 import android.content.Context
 import androidx.room.Room
 import com.example.myapplication.dosukoityanko.domain.repository.likeList.LikeRestaurantDao
+import com.example.myapplication.dosukoityanko.domain.repository.likeList.LikeRestaurantRepository
+import com.example.myapplication.dosukoityanko.domain.repository.likeList.LikeRestaurantRepositoryImpl
 import com.example.myapplication.dosukoityanko.domain.repository.restaurantList.RestaurantListRepository
 import com.example.myapplication.dosukoityanko.domain.repository.restaurantList.RestaurantListRepositoryImpl
 import dagger.Module
@@ -39,4 +41,10 @@ object AppModule {
     ): RestaurantListRepository {
         return RestaurantListRepositoryImpl(likeRestaurantDao)
     }
+
+    @Provides
+    @Singleton
+    fun provideLikeListRepository(
+        likeRestaurantDao: LikeRestaurantDao
+    ): LikeRestaurantRepository = LikeRestaurantRepositoryImpl(likeRestaurantDao)
 }
