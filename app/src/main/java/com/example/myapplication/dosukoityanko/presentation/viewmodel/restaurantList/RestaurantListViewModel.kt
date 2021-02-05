@@ -1,23 +1,25 @@
 package com.example.myapplication.dosukoityanko.presentation.viewmodel.restaurantList
 
-import android.app.Application
 import android.location.Location
 import android.view.View
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.myapplication.dosukoityanko.domain.entity.common.Resource
 import com.example.myapplication.dosukoityanko.domain.entity.restaurantList.Restaurant
-import com.example.myapplication.dosukoityanko.domain.repository.likeList.LikeRestaurantDao
 import com.example.myapplication.dosukoityanko.domain.repository.restaurantList.RestaurantListRepository
-import com.example.myapplication.dosukoityanko.domain.repository.restaurantList.RestaurantListRepositoryImpl
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RestaurantListViewModel(
-    application: Application,
+@HiltViewModel
+class RestaurantListViewModel @Inject constructor(
     private val restaurantListRepository: RestaurantListRepository
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
     private val _restaurantList = MutableStateFlow<Resource<List<Restaurant>>>(Resource.Empty)
     val restaurantList: StateFlow<Resource<List<Restaurant>>> = _restaurantList
@@ -97,20 +99,6 @@ class RestaurantListViewModel(
                     fallback()
                 }
             }
-        }
-    }
-
-    companion object {
-        class Factory(
-            private val application: Application?,
-            private val likeRestaurantDao: LikeRestaurantDao,
-            private val restaurantListRepository: RestaurantListRepository = RestaurantListRepositoryImpl(
-                likeRestaurantDao
-            )
-        ) : ViewModelProvider.NewInstanceFactory() {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel?> create(modelClass: Class<T>) =
-                RestaurantListViewModel(application!!, restaurantListRepository) as T
         }
     }
 }

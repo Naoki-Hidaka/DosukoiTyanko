@@ -6,6 +6,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.example.myapplication.dosukoityanko.R
 import com.example.myapplication.dosukoityanko.databinding.FragmentDetailRestaurantBinding
@@ -41,6 +42,7 @@ class DetailRestaurantFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
         when (item.itemId) {
             R.id.star -> {
                 viewModel.clickLike({
@@ -49,6 +51,9 @@ class DetailRestaurantFragment : Fragment() {
                 ) {
                     Toast.makeText(context, "お気に入り追加に失敗しました", Toast.LENGTH_SHORT).show()
                 }
+            }
+            android.R.id.home -> {
+                findNavController().navigateUp()
             }
         }
         return true

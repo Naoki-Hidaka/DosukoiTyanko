@@ -32,7 +32,6 @@ class LikeDetailFragment : Fragment() {
             settings.supportZoom()
             settings.builtInZoomControls = true
         }
-        setHasOptionsMenu(true)
         it.root
     }
 }
