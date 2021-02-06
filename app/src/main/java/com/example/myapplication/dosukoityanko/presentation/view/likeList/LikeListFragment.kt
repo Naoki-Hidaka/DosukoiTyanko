@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -15,20 +15,17 @@ import com.example.myapplication.dosukoityanko.R
 import com.example.myapplication.dosukoityanko.databinding.FragmentLikeListBinding
 import com.example.myapplication.dosukoityanko.databinding.ItemRestaurantListBinding
 import com.example.myapplication.dosukoityanko.domain.entity.restaurantList.Restaurant
-import com.example.myapplication.dosukoityanko.domain.service.MyApplication
 import com.example.myapplication.dosukoityanko.presentation.view.top.TopFragmentDirections
 import com.example.myapplication.dosukoityanko.presentation.view.util.confirmDialog
 import com.example.myapplication.dosukoityanko.presentation.view.util.transitionPage
 import com.example.myapplication.dosukoityanko.presentation.viewmodel.likeList.LikeListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
+@AndroidEntryPoint
 class LikeListFragment : Fragment() {
 
-    private val viewModel: LikeListViewModel by navGraphViewModels(R.id.nav_graph) {
-        LikeListViewModel.Companion.Factory(
-            MyApplication.db.likeRestaurantDao()
-        )
-    }
+    private val viewModel: LikeListViewModel by hiltNavGraphViewModels(R.id.nav_graph)
 
     private val likeListAdapter by lazy { LikeListAdapter() }
 

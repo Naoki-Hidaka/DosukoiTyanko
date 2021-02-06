@@ -1,16 +1,20 @@
 package com.example.myapplication.dosukoityanko.presentation.viewmodel.likeList
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.myapplication.dosukoityanko.domain.entity.restaurantList.Restaurant
-import com.example.myapplication.dosukoityanko.domain.repository.likeList.LikeRestaurantDao
 import com.example.myapplication.dosukoityanko.domain.repository.likeList.LikeRestaurantRepository
-import com.example.myapplication.dosukoityanko.domain.repository.likeList.LikeRestaurantRepositoryImpl
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LikeListViewModel(
+@HiltViewModel
+class LikeListViewModel @Inject constructor(
     private val likeRestaurantRepository: LikeRestaurantRepository
 ) : ViewModel() {
 
@@ -35,20 +39,6 @@ class LikeListViewModel(
     fun deleteRestaurant(restaurant: Restaurant) {
         viewModelScope.launch {
             likeRestaurantRepository.deleteRestaurant(restaurant)
-        }
-    }
-
-    companion object {
-        class Factory(
-            likeRestaurantDao: LikeRestaurantDao,
-            private val likeRestaurantRepository: LikeRestaurantRepository = LikeRestaurantRepositoryImpl(
-                likeRestaurantDao
-            )
-        ) : ViewModelProvider.NewInstanceFactory() {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel?> create(modelClass: Class<T>) = LikeListViewModel(
-                likeRestaurantRepository
-            ) as T
         }
     }
 }
