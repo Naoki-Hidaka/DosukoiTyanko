@@ -2,7 +2,6 @@ package com.example.myapplication.dosukoityanko.presentation.view.restaurantList
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -64,10 +63,20 @@ class RestaurantListFragment : Fragment() {
                         it.searchButton.visibility = View.VISIBLE
                     }
                     is Resource.ApiError -> {
-                        showRetryDialog(requireContext(), viewModel::getRestaurantList)
+                        viewModel.finalCalledFunction.value?.let {
+                            showRetryDialog(
+                                requireContext(),
+                                it
+                            )
+                        }
                     }
                     is Resource.NetworkError -> {
-                        showRetryDialog(requireContext(), viewModel::getRestaurantList)
+                        viewModel.finalCalledFunction.value?.let {
+                            showRetryDialog(
+                                requireContext(),
+                                it
+                            )
+                        }
                     }
                 }
             }
@@ -78,12 +87,12 @@ class RestaurantListFragment : Fragment() {
         }
         it.searchButton1.setOnClickListener {
             getLocation {
-                viewModel.getRestaurantBelowThreeThousand(it)
+                viewModel.getRestaurantBelowThreeThousand()
             }
         }
         it.searchButton2.setOnClickListener {
             getLocation {
-                viewModel.getRestaurantBelowFiveThousand(it)
+                viewModel.getRestaurantBelowFiveThousand()
             }
         }
         it.viewModel = viewModel
@@ -92,7 +101,7 @@ class RestaurantListFragment : Fragment() {
     }
 
     private fun getLocation(
-        callback: (Location) -> Unit
+        callback: () -> Unit
     ) {
 
         if (ContextCompat.checkSelfPermission(
@@ -110,7 +119,10 @@ class RestaurantListFragment : Fragment() {
             LocationRequest.create(),
             object : LocationCallback() {
                 override fun onLocationResult(locationResult: LocationResult?) {
-                    locationResult?.lastLocation?.let(callback)
+                    locationResult?.lastLocation?.let {
+                        viewModel.setLocation(it)
+                    }
+                    callback.invoke()
                     locationServices.removeLocationUpdates(this)
                 }
             },
