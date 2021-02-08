@@ -64,10 +64,13 @@ class RestaurantListFragment : Fragment() {
                         it.searchButton.visibility = View.VISIBLE
                     }
                     is Resource.ApiError -> {
-                        showRetryDialog(requireContext(), viewModel::getRestaurantList)
+                        showRetryDialog(
+                            requireContext(),
+                            viewModel::getRestaurantBelowThreeThousand
+                        )
                     }
                     is Resource.NetworkError -> {
-                        showRetryDialog(requireContext(), viewModel::getRestaurantList)
+                        showRetryDialog(requireContext(), viewModel::getRestaurantBelowFiveThousand)
                     }
                 }
             }
@@ -78,12 +81,12 @@ class RestaurantListFragment : Fragment() {
         }
         it.searchButton1.setOnClickListener {
             getLocation {
-                viewModel.getRestaurantBelowThreeThousand(it)
+                viewModel.getRestaurantBelowThreeThousand()
             }
         }
         it.searchButton2.setOnClickListener {
             getLocation {
-                viewModel.getRestaurantBelowFiveThousand(it)
+                viewModel.getRestaurantBelowFiveThousand()
             }
         }
         it.viewModel = viewModel
@@ -110,6 +113,9 @@ class RestaurantListFragment : Fragment() {
             LocationRequest.create(),
             object : LocationCallback() {
                 override fun onLocationResult(locationResult: LocationResult?) {
+                    locationResult?.lastLocation?.let {
+                        viewModel.setLocation(it)
+                    }
                     locationResult?.lastLocation?.let(callback)
                     locationServices.removeLocationUpdates(this)
                 }

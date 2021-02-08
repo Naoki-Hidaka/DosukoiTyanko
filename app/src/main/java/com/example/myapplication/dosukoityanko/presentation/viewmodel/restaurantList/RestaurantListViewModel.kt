@@ -44,6 +44,10 @@ class RestaurantListViewModel @Inject constructor(
         }
     }
 
+    val finalCalledFunction = MutableLiveData<() -> Unit>()
+
+    private val _location = MutableLiveData<Location>()
+
     fun setEmptyImageState(visibleState: Boolean) {
         _emptyImageState.value = visibleState
     }
@@ -67,20 +71,26 @@ class RestaurantListViewModel @Inject constructor(
         }
     }
 
-    fun getRestaurantBelowThreeThousand(location: Location) {
+    fun getRestaurantBelowThreeThousand() {
+        finalCalledFunction.value = ::getRestaurantBelowThreeThousand
         optionFabClose()
         viewModelScope.launch {
-            restaurantListRepository.getRestaurantBelowThreeThousand(location).collect {
-                _restaurantList.value = it
+            _location.value?.let {
+                restaurantListRepository.getRestaurantBelowThreeThousand(it).collect {
+                    _restaurantList.value = it
+                }
             }
         }
     }
 
-    fun getRestaurantBelowFiveThousand(location: Location) {
+    fun getRestaurantBelowFiveThousand() {
+        finalCalledFunction.value = ::getRestaurantBelowFiveThousand
         optionFabClose()
         viewModelScope.launch {
-            restaurantListRepository.getRestaurantBelowFiveThousand(location).collect {
-                _restaurantList.value = it
+            _location.value?.let {
+                restaurantListRepository.getRestaurantBelowFiveThousand(it).collect {
+                    _restaurantList.value = it
+                }
             }
         }
     }
@@ -100,5 +110,9 @@ class RestaurantListViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun setLocation(location: Location) {
+        _location.value = location
     }
 }
