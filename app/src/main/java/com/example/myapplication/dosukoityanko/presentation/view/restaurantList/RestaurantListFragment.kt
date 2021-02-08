@@ -69,7 +69,6 @@ class RestaurantListFragment : Fragment() {
                                 it
                             )
                         }
-
                     }
                     is Resource.NetworkError -> {
                         viewModel.finalCalledFunction.value?.let {
