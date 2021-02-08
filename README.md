@@ -9,8 +9,10 @@ gif予定
 - Room
 - Hilt
 - Retrofit&OkHttp
-- GitHub Actions
 - git-flow
+
+### CI/CD
+- GitHub Actions
 
 ## アプリの特徴
 ### 食べ放題のお店を探し放題
