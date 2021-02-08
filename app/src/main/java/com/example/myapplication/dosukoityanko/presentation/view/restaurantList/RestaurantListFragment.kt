@@ -63,13 +63,21 @@ class RestaurantListFragment : Fragment() {
                         it.searchButton.visibility = View.VISIBLE
                     }
                     is Resource.ApiError -> {
-                        showRetryDialog(
-                            requireContext(),
-                            viewModel::getRestaurantBelowThreeThousand
-                        )
+                        viewModel.finalCalledFunction.value?.let {
+                            showRetryDialog(
+                                requireContext(),
+                                it
+                            )
+                        }
+
                     }
                     is Resource.NetworkError -> {
-                        showRetryDialog(requireContext(), viewModel::getRestaurantBelowFiveThousand)
+                        viewModel.finalCalledFunction.value?.let {
+                            showRetryDialog(
+                                requireContext(),
+                                it
+                            )
+                        }
                     }
                 }
             }
