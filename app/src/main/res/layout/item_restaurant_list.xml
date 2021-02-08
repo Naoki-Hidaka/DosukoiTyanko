@@ -7,7 +7,7 @@
 
         <variable
             name="restaurant"
-            type="com.example.myapplication.dosukoityanko.domain.entity.restaurantList.Restaurant" />
+            type="jp.dosukoityanko.domain.entity.restaurantList.Restaurant" />
 
     </data>
 

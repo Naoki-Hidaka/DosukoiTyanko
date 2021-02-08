@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.myapplication.dosukoityanko.presentation.viewmodel.restaurantList.RestaurantListViewModel" />
+            type="jp.dosukoityanko.presentation.viewmodel.restaurantList.RestaurantListViewModel" />
 
     </data>
 
