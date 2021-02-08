@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/topFragment"
-        android:name="com.example.myapplication.dosukoityanko.presentation.view.top.TopFragment"
+        android:name="jp.dosukoityanko.presentation.view.top.TopFragment"
         android:label="@string/app_name">
         <action
             android:id="@+id/action_topFragment_to_detailRestaurantFragment"
@@ -17,10 +17,10 @@
     </fragment>
     <fragment
         android:id="@+id/detailRestaurantFragment"
-        android:name="com.example.myapplication.dosukoityanko.presentation.view.detailRestaurant.DetailRestaurantFragment"
+        android:name="jp.dosukoityanko.presentation.view.detailRestaurant.DetailRestaurantFragment"
         android:label="@string/app_name" />
     <fragment
         android:id="@+id/likeDetailFragment"
-        android:name="com.example.myapplication.dosukoityanko.presentation.view.likeList.LikeDetailFragment"
+        android:name="jp.dosukoityanko.presentation.view.likeList.LikeDetailFragment"
         android:label="LikeDetailFragment" />
 </navigation>

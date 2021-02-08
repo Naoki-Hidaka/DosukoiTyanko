@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.myapplication.dosukoityanko.presentation.viewmodel.likeList.LikeListViewModel" />
+            type="jp.dosukoityanko.presentation.viewmodel.likeList.LikeListViewModel" />
 
     </data>
 
