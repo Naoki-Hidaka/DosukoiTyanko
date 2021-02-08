@@ -2,7 +2,6 @@ package com.example.myapplication.dosukoityanko.presentation.view.restaurantList
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -95,7 +94,7 @@ class RestaurantListFragment : Fragment() {
     }
 
     private fun getLocation(
-        callback: (Location) -> Unit
+        callback: () -> Unit
     ) {
 
         if (ContextCompat.checkSelfPermission(
@@ -116,7 +115,7 @@ class RestaurantListFragment : Fragment() {
                     locationResult?.lastLocation?.let {
                         viewModel.setLocation(it)
                     }
-                    locationResult?.lastLocation?.let(callback)
+                    callback.invoke()
                     locationServices.removeLocationUpdates(this)
                 }
             },
