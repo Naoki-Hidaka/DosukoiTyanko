@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/topFragment">
+
+    <fragment
+        android:id="@+id/topFragment"
+        android:name="jp.dosukoityanko.presentation.view.top.TopFragment"
+        android:label="@string/app_name">
+        <action
+            android:id="@+id/action_topFragment_to_detailRestaurantFragment"
+            app:destination="@id/detailRestaurantFragment" />
+        <action
+            android:id="@+id/action_topFragment_to_likeDetailFragment"
+            app:destination="@id/likeDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailRestaurantFragment"
+        android:name="jp.dosukoityanko.presentation.view.detailRestaurant.DetailRestaurantFragment"
+        android:label="@string/app_name" />
+    <fragment
+        android:id="@+id/likeDetailFragment"
+        android:name="jp.dosukoityanko.presentation.view.likeList.LikeDetailFragment"
+        android:label="LikeDetailFragment" />
+</navigation>
