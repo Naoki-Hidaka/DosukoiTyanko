@@ -1,6 +1,6 @@
 # どすこいちゃんこ
 ## アプリ紹介
-![Gif](https://raw.github.com/wiki/Naoki-Hidaka/DosukoiTyanko/app_introdution.gif)
+![Gif](https://raw.github.com/wiki/Naoki-Hidaka/DosukoiTyanko/app_introduction.gif)
 
 ## 使用した技術
 - MVVM
