@@ -10,6 +10,7 @@ import dagger.hilt.components.SingletonComponent
 import jp.dosukoityanko.domain.repository.likeList.LikeRestaurantDao
 import jp.dosukoityanko.domain.repository.likeList.LikeRestaurantRepository
 import jp.dosukoityanko.domain.repository.likeList.LikeRestaurantRepositoryImpl
+import jp.dosukoityanko.domain.repository.restaurantList.RestaurantListDataStore
 import jp.dosukoityanko.domain.repository.restaurantList.RestaurantListRepository
 import jp.dosukoityanko.domain.repository.restaurantList.RestaurantListRepositoryImpl
 import javax.inject.Singleton
@@ -36,10 +37,15 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideRestaurantListDataStore() = RestaurantListDataStore
+
+    @Provides
+    @Singleton
     fun provideRestaurantListRepository(
-        likeRestaurantDao: LikeRestaurantDao
+        likeRestaurantDao: LikeRestaurantDao,
+        restaurantListDataStore: RestaurantListDataStore
     ): RestaurantListRepository {
-        return RestaurantListRepositoryImpl(likeRestaurantDao)
+        return RestaurantListRepositoryImpl(likeRestaurantDao, restaurantListDataStore)
     }
 
     @Provides
