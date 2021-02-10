@@ -1,11 +1,11 @@
 package jp.dosukoityanko.domain.repository.restaurantList
 
 import android.location.Location
-import jp.dosukoityanko.BuildConfig
 import jp.dosukoityanko.domain.entity.common.ErrorBody
 import jp.dosukoityanko.domain.entity.common.Resource
 import jp.dosukoityanko.domain.entity.restaurantList.Restaurant
 import jp.dosukoityanko.domain.service.ApiClient
+import jp.dosukoityanko.domain.service.ApiClient.apiKey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -14,7 +14,6 @@ import kotlinx.coroutines.withContext
 
 object RestaurantListDataStore {
 
-    private const val apiKey = BuildConfig.API_KEY
 
     fun fetchRestaurants(
         location: Location?,

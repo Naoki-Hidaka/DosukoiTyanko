@@ -8,6 +8,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
 
+    const val apiKey = BuildConfig.API_KEY
+
     private const val baseUrl = BuildConfig.BASE_URL
 
     private val jsonConverter by lazy {
