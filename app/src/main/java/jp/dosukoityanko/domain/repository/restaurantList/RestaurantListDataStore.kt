@@ -13,8 +13,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 
 object RestaurantListDataStore {
-
-
+    
     fun fetchRestaurants(
         location: Location?,
         operation: (List<Restaurant>) -> List<Restaurant> = { it }
