@@ -19,7 +19,6 @@ class RestaurantListRepositoryImplTest {
 
     private val restaurantList = createMockRestaurantList()
 
-
     @Before
     fun setUp() {
         likeRestaurantDao = mockk()
@@ -34,7 +33,6 @@ class RestaurantListRepositoryImplTest {
             val flow = restaurantRepository.getRestaurantBelowThreeThousand(null)
             val flowValue = flow.dropWhile { it is Resource.InProgress }.first()
             assertThat(flowValue.extractData?.all { it.budget?.toInt() ?: 0 <= 3000 }).isTrue()
-
         }
     }
 
