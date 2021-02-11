@@ -9,9 +9,9 @@ interface RestaurantListRepository {
 
     suspend fun getRestaurant(): Flow<Resource<List<Restaurant>>>
 
-    suspend fun getRestaurantBelowThreeThousand(location: Location): Flow<Resource<List<Restaurant>>>
+    suspend fun getRestaurantBelowThreeThousand(location: Location?): Flow<Resource<List<Restaurant>>>
 
-    suspend fun getRestaurantBelowFiveThousand(location: Location): Flow<Resource<List<Restaurant>>>
+    suspend fun getRestaurantBelowFiveThousand(location: Location?): Flow<Resource<List<Restaurant>>>
 
     suspend fun addRestaurant(
         restaurant: Restaurant,
