@@ -15,15 +15,15 @@ class RestaurantListRepositoryImpl @Inject constructor(
     override suspend fun getRestaurant(): Flow<Resource<List<Restaurant>>> =
         restaurantListDataStore.fetchRestaurants(null)
 
-    override suspend fun getRestaurantBelowThreeThousand(location: Location): Flow<Resource<List<Restaurant>>> {
+    override suspend fun getRestaurantBelowThreeThousand(location: Location?): Flow<Resource<List<Restaurant>>> {
         return restaurantListDataStore.fetchRestaurants(location) {
-            it.dropWhile { it.budget?.toInt() ?: 0 >= 3000 }
+            it.filter { (it.budget?.toInt() ?: 0 <= 3000) }
         }
     }
 
-    override suspend fun getRestaurantBelowFiveThousand(location: Location): Flow<Resource<List<Restaurant>>> =
+    override suspend fun getRestaurantBelowFiveThousand(location: Location?): Flow<Resource<List<Restaurant>>> =
         restaurantListDataStore.fetchRestaurants(location) {
-            it.dropWhile { it.budget?.toInt() ?: 0 >= 5000 }
+            it.filter { it.budget?.toInt() ?: 0 <= 5000 }
         }
 
     override suspend fun addRestaurant(
