@@ -11,6 +11,7 @@ import jp.dosukoityanko.domain.repository.likeList.LikeRestaurantDao
 import jp.dosukoityanko.domain.repository.likeList.LikeRestaurantRepository
 import jp.dosukoityanko.domain.repository.likeList.LikeRestaurantRepositoryImpl
 import jp.dosukoityanko.domain.repository.restaurantList.RestaurantListDataStore
+import jp.dosukoityanko.domain.repository.restaurantList.RestaurantListDataStoreImpl
 import jp.dosukoityanko.domain.repository.restaurantList.RestaurantListRepository
 import jp.dosukoityanko.domain.repository.restaurantList.RestaurantListRepositoryImpl
 import javax.inject.Singleton
@@ -37,7 +38,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRestaurantListDataStore() = RestaurantListDataStore
+    fun provideRestaurantListDataStore(): RestaurantListDataStore = RestaurantListDataStoreImpl
 
     @Provides
     @Singleton
