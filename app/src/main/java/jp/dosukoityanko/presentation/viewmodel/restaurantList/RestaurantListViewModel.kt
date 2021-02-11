@@ -62,15 +62,6 @@ class RestaurantListViewModel @Inject constructor(
         _handButtonState.value = false
     }
 
-    fun getRestaurantList() {
-        optionFabClose()
-        viewModelScope.launch {
-            restaurantListRepository.getRestaurant().collect {
-                _restaurantList.value = it
-            }
-        }
-    }
-
     fun getRestaurantBelowThreeThousand() {
         finalCalledFunction.value = ::getRestaurantBelowThreeThousand
         optionFabClose()
