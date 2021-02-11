@@ -1,11 +1,19 @@
 package jp.dosukoityanko.domain.repository.restaurantList
 
-import org.junit.Assert.*
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJ)
 class RestaurantListRepositoryImplTest {
+
+
+    @Before
+    fun setUp() {
+    }
+
+    @After
+    fun tearDown() {
+    }
 
     @Test
     fun getRestaurant() {
@@ -17,9 +25,5 @@ class RestaurantListRepositoryImplTest {
 
     @Test
     fun getRestaurantBelowFiveThousand() {
-    }
-
-    @Test
-    fun addRestaurant() {
     }
 }
