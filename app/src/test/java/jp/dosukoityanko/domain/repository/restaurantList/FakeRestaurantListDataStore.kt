@@ -7,7 +7,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-object FakeRestaurantListDataStore : RestaurantListDataStore {
+class FakeRestaurantListDataStore(
+    private val restaurantList: List<Restaurant>
+) : RestaurantListDataStore {
 
     override fun fetchRestaurants(
         location: Location?,
@@ -15,5 +17,10 @@ object FakeRestaurantListDataStore : RestaurantListDataStore {
     ): Flow<Resource<List<Restaurant>>> = flow {
         emit(Resource.InProgress)
         delay(1000)
+        emit(
+            Resource.Success(
+                operation(restaurantList)
+            )
+        )
     }
 }
