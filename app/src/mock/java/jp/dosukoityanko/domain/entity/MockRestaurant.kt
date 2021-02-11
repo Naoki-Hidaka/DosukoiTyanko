@@ -4,7 +4,7 @@ import jp.dosukoityanko.domain.entity.restaurantList.*
 
 fun createMockRestaurantList(): List<Restaurant> {
     val mutableList = mutableListOf<Restaurant>()
-    repeat(10) {
+    repeat(100) {
         mutableList.add(createMockRestaurant())
     }
 

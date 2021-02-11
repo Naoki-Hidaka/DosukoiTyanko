@@ -27,15 +27,12 @@ class RestaurantListRepositoryImplTest {
         restaurantRepository =
             RestaurantListRepositoryImpl(likeRestaurantDao, restaurantListDataStore)
     }
-    
+
     @Test
     fun getRestaurantBelowThreeThousand() {
         runBlockingTest {
             val flow = restaurantRepository.getRestaurantBelowThreeThousand(null)
             val flowValue = flow.dropWhile { it is Resource.InProgress }.first()
-            flowValue.extractData?.forEach {
-                println(it.budget)
-            }
             assertThat(flowValue.extractData?.all { it.budget?.toInt() ?: 0 <= 3000 }).isTrue()
 
         }
@@ -43,5 +40,10 @@ class RestaurantListRepositoryImplTest {
 
     @Test
     fun getRestaurantBelowFiveThousand() {
+        runBlockingTest {
+            val flow = restaurantRepository.getRestaurantBelowThreeThousand(null)
+            val flowValue = flow.dropWhile { it is Resource.InProgress }.first()
+            assertThat(flowValue.extractData?.all { it.budget?.toInt() ?: 0 <= 5000 }).isTrue()
+        }
     }
 }
