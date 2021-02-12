@@ -1,4 +1,5 @@
 # どすこいちゃんこ
+https://play.google.com/store/apps/details?id=jp.dosukoityanko
 ## アプリ紹介
 ![Gif](https://raw.github.com/wiki/Naoki-Hidaka/DosukoiTyanko/app_introduction.gif)
 ![Gif](https://raw.github.com/wiki/Naoki-Hidaka/DosukoiTyanko/app_introduction_2.gif)
