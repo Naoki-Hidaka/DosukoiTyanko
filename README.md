@@ -34,6 +34,7 @@
 - [Location](https://developers.google.com/android/reference/com/google/android/gms/location/FusedLocationProviderClient.html?hl=ja)
 - [ktlint](https://github.com/pinterest/ktlint)
 - [Junit4](https://github.com/junit-team/junit4)
+- [MockK](https://github.com/mockk/mockk)
 
 ## 制作時間
 約25時間
