@@ -138,7 +138,7 @@ dependencies {
     testImplementation "io.mockk:mockk:1.10.5"
 
     //Robolectric
-    testImplementation "org.robolectric:robolectric:4.3.1"
+    testImplementation "org.robolectric:robolectric:4.5.1"
 
 }
 
