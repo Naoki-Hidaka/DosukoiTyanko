@@ -14,8 +14,8 @@ android {
         applicationId "jp.dosukoityanko"
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 4
-        versionName "1.0.3"
+        versionCode 5
+        versionName "1.0.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "API_KEY", "\"1b2ce85f5b084352fb2b00054d0d2150\"")
