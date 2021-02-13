@@ -16,7 +16,7 @@ class RestaurantListRepositoryImpl @Inject constructor(
         restaurantListDataStore.fetchRestaurants(null)
 
     override suspend fun getRestaurantBelowThreeThousand(location: Location?): Flow<Resource<List<Restaurant>>> {
-        return restaurantListDataStore.fetchRestaurants(null) {
+        return restaurantListDataStore.fetchRestaurants(location) {
             it.filter { (it.budgetInt() <= 3000) }
         }
     }
