@@ -11,7 +11,7 @@ fun createMockRestaurantList(): List<Restaurant> {
     return mutableList.toList()
 }
 
-private fun createMockRestaurant(): Restaurant {
+fun createMockRestaurant(): Restaurant {
     return Restaurant(
         "11223344",
         "2021-02-11",
