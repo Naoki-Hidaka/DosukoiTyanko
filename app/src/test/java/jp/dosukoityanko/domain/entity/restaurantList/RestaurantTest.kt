@@ -13,7 +13,6 @@ class RestaurantTest {
     fun setUp() {
         restaurant = mockRestaurant()
         emptyBudgetRestaurant = mockEntityBudgetRestaurant()
-
     }
 
     @Test
@@ -26,7 +25,6 @@ class RestaurantTest {
     fun budgetInt() {
         assertThat(restaurant.budgetInt()).isEqualTo(restaurant.budget?.toInt())
         assertThat(emptyBudgetRestaurant.budgetInt()).isEqualTo(0)
-
     }
 
     private fun mockRestaurant(): Restaurant {
