@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +31,6 @@ import jp.dosukoityanko.presentation.view.util.showRetryDialog
 import jp.dosukoityanko.presentation.view.util.transitionPage
 import jp.dosukoityanko.presentation.viewmodel.restaurantList.RestaurantListViewModel
 import kotlinx.coroutines.flow.collect
-import timber.log.Timber
 
 @AndroidEntryPoint
 class RestaurantListFragment : Fragment() {
@@ -43,6 +43,10 @@ class RestaurantListFragment : Fragment() {
         LocationServices.getFusedLocationProviderClient(requireContext())
     }
 
+    private val locationRequest by lazy {
+        LocationRequest().apply { priority = PRIORITY_HIGH_ACCURACY }
+    }
+    
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -126,13 +130,12 @@ class RestaurantListFragment : Fragment() {
             )
         }
         locationServices.requestLocationUpdates(
-            LocationRequest.create(),
+            locationRequest,
             object : LocationCallback() {
                 override fun onLocationResult(locationResult: LocationResult?) {
                     locationResult?.lastLocation?.let {
                         viewModel.setLocation(it)
                     }
-                    Timber.d("debug: location ${locationResult?.lastLocation}")
                     callback.invoke()
                     locationServices.removeLocationUpdates(this)
                 }
