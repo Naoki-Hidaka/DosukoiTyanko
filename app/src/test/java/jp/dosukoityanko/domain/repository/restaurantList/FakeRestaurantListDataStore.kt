@@ -1,6 +1,7 @@
 package jp.dosukoityanko.domain.repository.restaurantList
 
 import android.location.Location
+import jp.dosukoityanko.domain.entity.common.Distance
 import jp.dosukoityanko.domain.entity.common.Resource
 import jp.dosukoityanko.domain.entity.restaurantList.Restaurant
 import kotlinx.coroutines.delay
@@ -13,6 +14,7 @@ class FakeRestaurantListDataStore(
 
     override fun fetchRestaurants(
         location: Location?,
+        distance: Distance?,
         operation: (List<Restaurant>) -> List<Restaurant>
     ): Flow<Resource<List<Restaurant>>> = flow {
         emit(Resource.InProgress)
