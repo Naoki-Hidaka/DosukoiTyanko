@@ -67,7 +67,7 @@ class RestaurantListFragment : Fragment() {
                             showRetryDialog(
                                 requireContext(),
                                 it,
-                                message = resource.errorBody.error.first().message
+                                message = resource.errorBody.errorString()
                             )
                         }
                     }
