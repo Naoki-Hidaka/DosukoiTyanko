@@ -106,14 +106,10 @@ class RestaurantListFragment : Fragment() {
             adapter = restaurantListAdapter
             layoutManager = LinearLayoutManager(context)
         }
-        it.searchButton1.setOnClickListener {
+
+        it.bottomSheet.searchButton.setOnClickListener {
             getLocation {
-                viewModel.getRestaurantBelowThreeThousand()
-            }
-        }
-        it.searchButton2.setOnClickListener {
-            getLocation {
-                viewModel.getRestaurantBelowFiveThousand()
+                viewModel.getRestaurant()
             }
         }
         it.viewModel = viewModel

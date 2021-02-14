@@ -1,6 +1,7 @@
 package jp.dosukoityanko.domain.repository.restaurantList
 
 import android.location.Location
+import jp.dosukoityanko.domain.entity.common.Distance
 import jp.dosukoityanko.domain.entity.common.ErrorBody
 import jp.dosukoityanko.domain.entity.common.Resource
 import jp.dosukoityanko.domain.entity.restaurantList.Restaurant
@@ -16,6 +17,7 @@ object RestaurantListDataStoreImpl : RestaurantListDataStore {
 
     override fun fetchRestaurants(
         location: Location?,
+        distance: Distance?,
         operation: (List<Restaurant>) -> List<Restaurant>
     ): Flow<Resource<List<Restaurant>>> = flow {
         emit(Resource.InProgress)
@@ -25,7 +27,8 @@ object RestaurantListDataStoreImpl : RestaurantListDataStore {
                     ApiClient.retrofit.getRestaurant(
                         apiKey,
                         it.latitude,
-                        it.longitude
+                        it.longitude,
+                        range = distance?.id ?: 3
                     )
                 } ?: run {
                     ApiClient.retrofit.getRestaurant(apiKey)

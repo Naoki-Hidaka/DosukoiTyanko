@@ -14,8 +14,8 @@ android {
         applicationId "jp.dosukoityanko"
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 6
-        versionName "1.0.5"
+        versionCode 7
+        versionName "2.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "API_KEY", "\"1b2ce85f5b084352fb2b00054d0d2150\"")
@@ -140,6 +140,8 @@ dependencies {
     //Robolectric
     testImplementation "org.robolectric:robolectric:4.5.1"
 
+    //Segment Control
+    implementation "info.hoang8f:android-segmented:1.0.6"
 }
 
 configurations {

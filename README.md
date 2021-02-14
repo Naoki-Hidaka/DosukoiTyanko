@@ -37,5 +37,8 @@ https://play.google.com/store/apps/details?id=jp.dosukoityanko
 - [Junit4](https://github.com/junit-team/junit4)
 - [MockK](https://github.com/mockk/mockk)
 
+## 使用したAPI
+- [ぐるなびレストラン検索API](https://api.gnavi.co.jp/api/manual/restsearch/)
+
 ## 制作時間
 約25時間
