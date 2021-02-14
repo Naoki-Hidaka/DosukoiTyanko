@@ -15,11 +15,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
 import jp.dosukoityanko.R
 import jp.dosukoityanko.databinding.FragmentRestaurantListBinding
@@ -46,7 +44,16 @@ class RestaurantListFragment : Fragment() {
     private val locationRequest by lazy {
         LocationRequest().apply { priority = PRIORITY_HIGH_ACCURACY }
     }
-    
+
+    private val locationBuilder by lazy {
+        LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest).build()
+    }
+
+    private val client by lazy {
+        LocationServices.getSettingsClient(requireContext())
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -129,19 +136,27 @@ class RestaurantListFragment : Fragment() {
                 REQUEST_PERMISSION
             )
         }
-        locationServices.requestLocationUpdates(
-            locationRequest,
-            object : LocationCallback() {
-                override fun onLocationResult(locationResult: LocationResult?) {
-                    locationResult?.lastLocation?.let {
-                        viewModel.setLocation(it)
-                    }
-                    callback.invoke()
-                    locationServices.removeLocationUpdates(this)
+        client.checkLocationSettings(locationBuilder)
+            .addOnSuccessListener {
+                locationServices.requestLocationUpdates(
+                    locationRequest,
+                    object : LocationCallback() {
+                        override fun onLocationResult(locationResult: LocationResult?) {
+                            locationResult?.lastLocation?.let {
+                                viewModel.setLocation(it)
+                            }
+                            callback.invoke()
+                            locationServices.removeLocationUpdates(this)
+                        }
+                    },
+                    null
+                )
+            }
+            .addOnFailureListener {
+                if (it is ResolvableApiException) {
+                    it.startResolutionForResult(requireActivity(), 1)
                 }
-            },
-            null
-        )
+            }
     }
 
     private inner class RestaurantListAdapter :
