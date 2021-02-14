@@ -17,9 +17,8 @@ https://play.google.com/store/apps/details?id=jp.dosukoityanko
 
 ## アプリの特徴
 ### 食べ放題のお店を探し放題
-- 3000円, 5000円でフィルタリング可能
-- 2回タップで探せるシンプルなUI
-- 徒歩で行ける距離(1km)をの食べ放題の店を探せる
+- 数回のタップで食べ放題の店を探せるシンプルなUI
+- 距離(1km, 3km, 5km)と値段(3,000円、5,000円)でリッチな検索が可能
 
 ## 使用したライブラリ
 - [Navigation Component](https://developer.android.com/jetpack/androidx/releases/navigation?hl=ja)
