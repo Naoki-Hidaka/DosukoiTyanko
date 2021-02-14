@@ -30,6 +30,7 @@ import jp.dosukoityanko.presentation.view.util.showRetryDialog
 import jp.dosukoityanko.presentation.view.util.transitionPage
 import jp.dosukoityanko.presentation.viewmodel.restaurantList.RestaurantListViewModel
 import kotlinx.coroutines.flow.collect
+import timber.log.Timber
 
 @AndroidEntryPoint
 class RestaurantListFragment : Fragment() {
@@ -51,17 +52,21 @@ class RestaurantListFragment : Fragment() {
             viewModel.restaurantList.collect { resource ->
                 when (resource) {
                     is Resource.Empty -> {
+                        it.notFoundMessage.visibility = View.GONE
                     }
                     is Resource.InProgress -> {
                         viewModel.setEmptyImageState(false)
+                        it.notFoundMessage.visibility = View.GONE
                         it.progressBar.visibility = View.VISIBLE
                         it.emptyImage.visibility = View.GONE
                     }
                     is Resource.Success -> {
+                        it.notFoundMessage.visibility = View.GONE
                         restaurantListAdapter.submitList(resource.extractData)
                         it.progressBar.visibility = View.GONE
                     }
                     is Resource.ApiError -> {
+                        it.notFoundMessage.visibility = View.VISIBLE
                         it.progressBar.visibility = View.GONE
                         viewModel.finalCalledFunction.value?.let {
                             showRetryDialog(
@@ -72,11 +77,14 @@ class RestaurantListFragment : Fragment() {
                         }
                     }
                     is Resource.NetworkError -> {
+                        it.notFoundMessage.visibility = View.GONE
                         it.progressBar.visibility = View.GONE
                         viewModel.finalCalledFunction.value?.let {
                             showRetryDialog(
                                 requireContext(),
-                                it
+                                it,
+                                "ネットワークエラー",
+                                resource.errorMessage
                             )
                         }
                     }
@@ -124,6 +132,7 @@ class RestaurantListFragment : Fragment() {
                     locationResult?.lastLocation?.let {
                         viewModel.setLocation(it)
                     }
+                    Timber.d("debug: location ${locationResult?.lastLocation}")
                     callback.invoke()
                     locationServices.removeLocationUpdates(this)
                 }
