@@ -9,6 +9,12 @@ data class ErrorBody(
         fun fromJson(error: String?): ErrorBody =
             JsonHandler.converter.fromJson(error, ErrorBody::class.java)
     }
+
+    fun errorString(): String {
+        return error.joinToString("\\n") {
+            it.message
+        }
+    }
 }
 
 data class ErrorContent(

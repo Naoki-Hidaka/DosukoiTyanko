@@ -44,7 +44,7 @@ object RestaurantListDataStoreImpl : RestaurantListDataStore {
                 }
             }
             .onFailure {
-                emit(Resource.NetworkError(it))
+                emit(Resource.NetworkError(it, "ネットワーク接続を確認してください"))
             }
     }.flowOn(Dispatchers.IO)
 }

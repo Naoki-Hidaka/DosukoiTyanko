@@ -2,7 +2,9 @@ package jp.dosukoityanko.domain.entity.common
 
 sealed class Resource<out T : Any?> {
     data class Success<out T : Any?>(val data: T?) : Resource<T>()
-    data class NetworkError(val exception: Throwable) : Resource<Nothing>()
+    data class NetworkError(val exception: Throwable, val errorMessage: String) :
+        Resource<Nothing>()
+
     data class ApiError(val errorBody: ErrorBody) : Resource<Nothing>()
     object InProgress : Resource<Nothing>()
     object Empty : Resource<Nothing>()
