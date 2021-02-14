@@ -1,12 +1,15 @@
 package jp.dosukoityanko.presentation.viewmodel.restaurantList
 
 import android.location.Location
-import android.view.View
+import android.widget.RadioGroup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import jp.dosukoityanko.R
+import jp.dosukoityanko.domain.entity.common.Amount
+import jp.dosukoityanko.domain.entity.common.Distance
 import jp.dosukoityanko.domain.entity.common.Resource
 import jp.dosukoityanko.domain.entity.restaurantList.Restaurant
 import jp.dosukoityanko.domain.repository.restaurantList.RestaurantListRepository
@@ -30,60 +33,54 @@ class RestaurantListViewModel @Inject constructor(
     private val _emptyImageState = MutableLiveData(true)
     val emptyImageState: LiveData<Boolean> = _emptyImageState
 
-    private val _searchButtonState = MutableLiveData(true)
-    val searchButtonState: LiveData<Boolean> = _searchButtonState
+    private val _bottomSheetState = MutableLiveData(false)
+    val bottomSheetState: LiveData<Boolean> = _bottomSheetState
 
-    private val _handButtonState = MutableLiveData(false)
-    val handButtonState: LiveData<Boolean> = _handButtonState
-
-    val onSearchButtonClick = View.OnClickListener {
-        if (_searchButtonState.value == true) {
-            optionFabOpen()
-        } else {
-            optionFabClose()
-        }
+    fun onSearchButtonClick() {
+        _bottomSheetState.value = !(_bottomSheetState.value ?: false)
     }
 
     val finalCalledFunction = MutableLiveData<() -> Unit>()
 
     private val _location = MutableLiveData<Location>()
 
+    private val _selectedDistance = MutableLiveData<Distance>()
+    val selectedDistance: LiveData<Distance> = _selectedDistance
+
+    private val _selectedAmount = MutableLiveData<Amount>()
+    val selectedAmount: LiveData<Amount> = _selectedAmount
+
+    val distanceRadioButtonCheckedListener = RadioGroup.OnCheckedChangeListener { _, id ->
+        when (id) {
+            R.id.a_kilo_meters -> _selectedDistance.value = Distance.A_KILO_METERS
+            R.id.three_kilo_meters -> _selectedDistance.value = Distance.THREE_KILO_METERS
+            R.id.five_kilo_meters -> _selectedDistance.value = Distance.FIVE_KILO_METERS
+        }
+    }
+
+    val amountRadioButtonCheckedListener = RadioGroup.OnCheckedChangeListener { _, id ->
+        when (id) {
+            R.id.three_thousand_yen -> _selectedAmount.value = Amount.THREE_THOUSAND
+            R.id.five_thousand_yen -> _selectedAmount.value = Amount.FIVE_THOUSAND
+        }
+    }
+
     fun setEmptyImageState(visibleState: Boolean) {
         _emptyImageState.value = visibleState
     }
 
-    private fun optionFabOpen() {
-        _searchButtonState.value = false
-        _handButtonState.value = true
-    }
-
-    private fun optionFabClose() {
-        _searchButtonState.value = true
-        _handButtonState.value = false
-    }
-
-    fun getRestaurantBelowThreeThousand() {
-        finalCalledFunction.value = ::getRestaurantBelowThreeThousand
-        optionFabClose()
+    fun getRestaurant() {
+        finalCalledFunction.value = ::getRestaurant
         viewModelScope.launch {
-            _location.value?.let {
-                restaurantListRepository.getRestaurantBelowThreeThousand(it).collect {
-                    _restaurantList.value = it
-                }
+            restaurantListRepository.getRestaurant(
+                _location.value,
+                _selectedDistance.value,
+                _selectedAmount.value
+            ).collect {
+                _restaurantList.value = it
             }
         }
-    }
-
-    fun getRestaurantBelowFiveThousand() {
-        finalCalledFunction.value = ::getRestaurantBelowFiveThousand
-        optionFabClose()
-        viewModelScope.launch {
-            _location.value?.let {
-                restaurantListRepository.getRestaurantBelowFiveThousand(it).collect {
-                    _restaurantList.value = it
-                }
-            }
-        }
+        _bottomSheetState.value = false
     }
 
     fun selectRestaurant(position: Int) {
@@ -105,5 +102,9 @@ class RestaurantListViewModel @Inject constructor(
 
     fun setLocation(location: Location) {
         _location.value = location
+    }
+
+    fun onCancelButtonClick() {
+        _bottomSheetState.value = false
     }
 }

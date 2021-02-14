@@ -3,4 +3,13 @@
     <string name="like">お気に入り</string>
     <string name="price">料金：</string>
     <string name="not_found_restaurant">お店が見つかりませんでした...</string>
+    <string name="search">検索</string>
+    <string name="a_kilo_meters">1km</string>
+    <string name="three_kilo_meters">3km</string>
+    <string name="five_kilo_meters">5km</string>
+    <string name="distance">距離</string>
+    <string name="amount">金額</string>
+    <string name="three_thousand_yen">3,000円</string>
+    <string name="five_thousand_yen">5,000円</string>
+    <string name="cancel">キャンセル</string>
 </resources>

@@ -48,6 +48,7 @@ class TopFragment : Fragment() {
                 tab.text = fragmentList[position].tabTitle
                 tab.icon = ContextCompat.getDrawable(context, fragmentList[position].tabIcon)
             }.attach()
+            isUserInputEnabled = false
         }
         it.root
     }
