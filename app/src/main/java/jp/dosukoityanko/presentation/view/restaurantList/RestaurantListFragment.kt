@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.hilt.android.AndroidEntryPoint
 import jp.dosukoityanko.R
 import jp.dosukoityanko.databinding.FragmentRestaurantListBinding
@@ -29,7 +28,6 @@ import jp.dosukoityanko.presentation.view.top.TopFragmentDirections
 import jp.dosukoityanko.presentation.view.util.showRetryDialog
 import jp.dosukoityanko.presentation.view.util.transitionPage
 import jp.dosukoityanko.presentation.viewmodel.restaurantList.RestaurantListViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
@@ -109,33 +107,13 @@ class RestaurantListFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
 
-        it.searchButton.setOnClickListener { _ ->
-            viewModel.onSearchButtonClick()
-            BottomSheetBehavior.from(it.bottomSheet.bottomSheetContents).apply {
-                state = BottomSheetBehavior.STATE_EXPANDED
-            }
-        }
-        it.searchButton1.setOnClickListener {
+        it.bottomSheet.searchButton.setOnClickListener {
             getLocation {
-                viewModel.getRestaurantBelowThreeThousand()
-            }
-        }
-        it.searchButton2.setOnClickListener {
-            getLocation {
-                viewModel.getRestaurantBelowFiveThousand()
+                viewModel.getRestaurant()
             }
         }
         it.viewModel = viewModel
         it.lifecycleOwner = viewLifecycleOwner
-
-        lifecycleScope.launchWhenResumed {
-            repeat(100) {
-                delay(1000)
-                viewModel._bottomSheetState.value = true
-                delay(1000)
-                viewModel._bottomSheetState.value = false
-            }
-        }
         it.root
     }
 

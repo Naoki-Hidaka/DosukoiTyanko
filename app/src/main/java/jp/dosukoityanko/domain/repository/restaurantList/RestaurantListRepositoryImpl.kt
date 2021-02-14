@@ -1,6 +1,8 @@
 package jp.dosukoityanko.domain.repository.restaurantList
 
 import android.location.Location
+import jp.dosukoityanko.domain.entity.common.Amount
+import jp.dosukoityanko.domain.entity.common.Distance
 import jp.dosukoityanko.domain.entity.common.Resource
 import jp.dosukoityanko.domain.entity.restaurantList.Restaurant
 import jp.dosukoityanko.domain.repository.likeList.LikeRestaurantDao
@@ -12,18 +14,13 @@ class RestaurantListRepositoryImpl @Inject constructor(
     private val restaurantListDataStore: RestaurantListDataStore
 ) : RestaurantListRepository {
 
-    override suspend fun getRestaurant(): Flow<Resource<List<Restaurant>>> =
-        restaurantListDataStore.fetchRestaurants(null)
-
-    override suspend fun getRestaurantBelowThreeThousand(location: Location?): Flow<Resource<List<Restaurant>>> {
-        return restaurantListDataStore.fetchRestaurants(location) {
-            it.filter { (it.budgetInt() <= 3000) }
-        }
-    }
-
-    override suspend fun getRestaurantBelowFiveThousand(location: Location?): Flow<Resource<List<Restaurant>>> =
-        restaurantListDataStore.fetchRestaurants(location) {
-            it.filter { it.budgetInt() <= 5000 }
+    override suspend fun getRestaurant(
+        location: Location?,
+        distance: Distance?,
+        amount: Amount?
+    ): Flow<Resource<List<Restaurant>>> =
+        restaurantListDataStore.fetchRestaurants(location, distance) {
+            it.filter { it.budgetInt() <= amount?.value ?: 3000 }
         }
 
     override suspend fun addRestaurant(
