@@ -60,17 +60,19 @@ class RestaurantListFragment : Fragment() {
                     is Resource.Success -> {
                         restaurantListAdapter.submitList(resource.extractData)
                         it.progressBar.visibility = View.GONE
-                        it.searchButton.visibility = View.VISIBLE
                     }
                     is Resource.ApiError -> {
+                        it.progressBar.visibility = View.GONE
                         viewModel.finalCalledFunction.value?.let {
                             showRetryDialog(
                                 requireContext(),
-                                it
+                                it,
+                                message = resource.errorBody.error.first().message
                             )
                         }
                     }
                     is Resource.NetworkError -> {
+                        it.progressBar.visibility = View.GONE
                         viewModel.finalCalledFunction.value?.let {
                             showRetryDialog(
                                 requireContext(),
