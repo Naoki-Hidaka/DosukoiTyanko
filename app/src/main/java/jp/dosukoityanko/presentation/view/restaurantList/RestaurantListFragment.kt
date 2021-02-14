@@ -15,10 +15,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
+import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import dagger.hilt.android.AndroidEntryPoint
 import jp.dosukoityanko.R
 import jp.dosukoityanko.databinding.FragmentRestaurantListBinding
@@ -42,6 +41,19 @@ class RestaurantListFragment : Fragment() {
         LocationServices.getFusedLocationProviderClient(requireContext())
     }
 
+    private val locationRequest by lazy {
+        LocationRequest().apply { priority = PRIORITY_HIGH_ACCURACY }
+    }
+
+    private val locationBuilder by lazy {
+        LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest).build()
+    }
+
+    private val client by lazy {
+        LocationServices.getSettingsClient(requireContext())
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -51,30 +63,39 @@ class RestaurantListFragment : Fragment() {
             viewModel.restaurantList.collect { resource ->
                 when (resource) {
                     is Resource.Empty -> {
+                        it.notFoundMessage.visibility = View.GONE
                     }
                     is Resource.InProgress -> {
                         viewModel.setEmptyImageState(false)
+                        it.notFoundMessage.visibility = View.GONE
                         it.progressBar.visibility = View.VISIBLE
                         it.emptyImage.visibility = View.GONE
                     }
                     is Resource.Success -> {
+                        it.notFoundMessage.visibility = View.GONE
                         restaurantListAdapter.submitList(resource.extractData)
                         it.progressBar.visibility = View.GONE
-                        it.searchButton.visibility = View.VISIBLE
                     }
                     is Resource.ApiError -> {
+                        it.notFoundMessage.visibility = View.VISIBLE
+                        it.progressBar.visibility = View.GONE
                         viewModel.finalCalledFunction.value?.let {
                             showRetryDialog(
                                 requireContext(),
-                                it
+                                it,
+                                message = resource.errorBody.errorString()
                             )
                         }
                     }
                     is Resource.NetworkError -> {
+                        it.notFoundMessage.visibility = View.GONE
+                        it.progressBar.visibility = View.GONE
                         viewModel.finalCalledFunction.value?.let {
                             showRetryDialog(
                                 requireContext(),
-                                it
+                                it,
+                                "ネットワークエラー",
+                                resource.errorMessage
                             )
                         }
                     }
@@ -115,19 +136,27 @@ class RestaurantListFragment : Fragment() {
                 REQUEST_PERMISSION
             )
         }
-        locationServices.requestLocationUpdates(
-            LocationRequest.create(),
-            object : LocationCallback() {
-                override fun onLocationResult(locationResult: LocationResult?) {
-                    locationResult?.lastLocation?.let {
-                        viewModel.setLocation(it)
-                    }
-                    callback.invoke()
-                    locationServices.removeLocationUpdates(this)
+        client.checkLocationSettings(locationBuilder)
+            .addOnSuccessListener {
+                locationServices.requestLocationUpdates(
+                    locationRequest,
+                    object : LocationCallback() {
+                        override fun onLocationResult(locationResult: LocationResult?) {
+                            locationResult?.lastLocation?.let {
+                                viewModel.setLocation(it)
+                            }
+                            callback.invoke()
+                            locationServices.removeLocationUpdates(this)
+                        }
+                    },
+                    null
+                )
+            }
+            .addOnFailureListener {
+                if (it is ResolvableApiException) {
+                    it.startResolutionForResult(requireActivity(), 1)
                 }
-            },
-            null
-        )
+            }
     }
 
     private inner class RestaurantListAdapter :

@@ -1,4 +1,5 @@
 # どすこいちゃんこ
+https://play.google.com/store/apps/details?id=jp.dosukoityanko
 ## アプリ紹介
 ![Gif](https://raw.github.com/wiki/Naoki-Hidaka/DosukoiTyanko/app_introduction.gif)
 ![Gif](https://raw.github.com/wiki/Naoki-Hidaka/DosukoiTyanko/app_introduction_2.gif)
@@ -34,6 +35,7 @@
 - [Location](https://developers.google.com/android/reference/com/google/android/gms/location/FusedLocationProviderClient.html?hl=ja)
 - [ktlint](https://github.com/pinterest/ktlint)
 - [Junit4](https://github.com/junit-team/junit4)
+- [MockK](https://github.com/mockk/mockk)
 
 ## 制作時間
 約25時間

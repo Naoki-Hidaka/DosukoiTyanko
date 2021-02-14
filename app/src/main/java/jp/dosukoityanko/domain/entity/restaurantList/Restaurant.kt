@@ -31,5 +31,11 @@ data class Restaurant(
     val lunch: String?,
     val creditCard: String?
 ) {
-    fun formatBudget() = "${budget}円"
+    fun formatBudget(): String {
+        return if (budget?.isNotEmpty() == true) "${budget}円" else "- 円"
+    }
+
+    fun budgetInt(): Int {
+        return if (budget?.isEmpty() == true) 0 else budget?.toInt() ?: 0
+    }
 }
