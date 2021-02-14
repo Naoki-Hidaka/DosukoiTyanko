@@ -1,7 +1,6 @@
 package jp.dosukoityanko.presentation.viewmodel.restaurantList
 
 import android.location.Location
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -36,7 +35,10 @@ class RestaurantListViewModel @Inject constructor(
     private val _handButtonState = MutableLiveData(false)
     val handButtonState: LiveData<Boolean> = _handButtonState
 
-    val onSearchButtonClick = View.OnClickListener {
+    val _bottomSheetState = MutableLiveData(false)
+    val bottomSheetState: LiveData<Boolean> = _bottomSheetState
+
+    fun onSearchButtonClick() {
         if (_searchButtonState.value == true) {
             optionFabOpen()
         } else {
