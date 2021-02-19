@@ -125,7 +125,7 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
     //Location
-    implementation 'com.google.android.gms:play-services-location:17.1.0'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
 
     //Hilt
     implementation "com.google.dagger:hilt-android:2.32-alpha"
