@@ -135,7 +135,7 @@ dependencies {
     implementation 'androidx.hilt:hilt-navigation-fragment:1.0.0-alpha03'
 
     //mockK
-    testImplementation "io.mockk:mockk:1.10.5"
+    testImplementation "io.mockk:mockk:1.11.0"
 
     //Robolectric
     testImplementation "org.robolectric:robolectric:4.5.1"
