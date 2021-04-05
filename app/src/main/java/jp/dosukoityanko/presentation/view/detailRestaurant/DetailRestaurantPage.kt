@@ -17,6 +17,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import jp.dosukoityanko.domain.entity.restaurantList.Restaurant
 import jp.dosukoityanko.presentation.viewmodel.restaurantList.RestaurantListViewModel
+import timber.log.Timber
 
 @Composable
 fun DetailRestaurantPage(viewModel: RestaurantListViewModel) {
@@ -36,6 +37,7 @@ fun ProgressIndicator(isLoading: Boolean) {
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
     ) {
+        Timber.d("debug: isLoading $isLoading")
         if (isLoading) {
             CircularProgressIndicator(progress = 1.0F, modifier = Modifier.wrapContentSize())
         }

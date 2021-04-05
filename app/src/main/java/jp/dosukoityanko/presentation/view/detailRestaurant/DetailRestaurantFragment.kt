@@ -15,43 +15,6 @@ class DetailRestaurantFragment : Fragment() {
 
     private val viewModel: RestaurantListViewModel by navGraphViewModels(R.id.nav_graph)
 
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View = FragmentDetailRestaurantBinding.inflate(inflater, container, false).let {
-//        it.lifecycleOwner = viewLifecycleOwner
-//        it.viewModel = viewModel
-//        it.webView.apply {
-//            webViewClient = object : WebViewClient() {
-//                override fun onPageFinished(view: WebView?, url: String?) {
-//                    it.progressBar.visibility = View.GONE
-//                }
-//            }
-//            settings.supportZoom()
-//            settings.builtInZoomControls = true
-//        }
-//        setHasOptionsMenu(true)
-//        it.root
-//    }
-
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View {
-//        return ComposeView(requireContext()).apply {
-//            ViewTreeLifecycleOwner.set(this, viewLifecycleOwner)
-//            setContent {
-//                viewModel.isLoading.observe(viewLifecycleOwner) {
-//                    Timber.d("debug: isLoading $it")
-//                }
-//                DetailRestaurantPage(viewModel = viewModel)
-//
-//            }
-//        }
-//    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
