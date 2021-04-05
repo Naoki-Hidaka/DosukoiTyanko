@@ -2,38 +2,66 @@ package jp.dosukoityanko.presentation.view.detailRestaurant
 
 import android.os.Bundle
 import android.view.*
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.Toast
+import androidx.compose.material.MaterialTheme
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import jp.dosukoityanko.R
-import jp.dosukoityanko.databinding.FragmentDetailRestaurantBinding
 import jp.dosukoityanko.presentation.viewmodel.restaurantList.RestaurantListViewModel
 
 class DetailRestaurantFragment : Fragment() {
 
     private val viewModel: RestaurantListViewModel by navGraphViewModels(R.id.nav_graph)
 
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View = FragmentDetailRestaurantBinding.inflate(inflater, container, false).let {
+//        it.lifecycleOwner = viewLifecycleOwner
+//        it.viewModel = viewModel
+//        it.webView.apply {
+//            webViewClient = object : WebViewClient() {
+//                override fun onPageFinished(view: WebView?, url: String?) {
+//                    it.progressBar.visibility = View.GONE
+//                }
+//            }
+//            settings.supportZoom()
+//            settings.builtInZoomControls = true
+//        }
+//        setHasOptionsMenu(true)
+//        it.root
+//    }
+
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View {
+//        return ComposeView(requireContext()).apply {
+//            ViewTreeLifecycleOwner.set(this, viewLifecycleOwner)
+//            setContent {
+//                viewModel.isLoading.observe(viewLifecycleOwner) {
+//                    Timber.d("debug: isLoading $it")
+//                }
+//                DetailRestaurantPage(viewModel = viewModel)
+//
+//            }
+//        }
+//    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FragmentDetailRestaurantBinding.inflate(inflater, container, false).let {
-        it.lifecycleOwner = viewLifecycleOwner
-        it.viewModel = viewModel
-        it.webView.apply {
-            webViewClient = object : WebViewClient() {
-                override fun onPageFinished(view: WebView?, url: String?) {
-                    it.progressBar.visibility = View.GONE
-                }
+    ): View? = inflater.inflate(R.layout.fragment_detail_restaurant, container, false).apply {
+        findViewById<ComposeView>(R.id.composeView).setContent {
+            MaterialTheme {
+                DetailRestaurantPage(viewModel = viewModel)
             }
-            settings.supportZoom()
-            settings.builtInZoomControls = true
         }
-        setHasOptionsMenu(true)
-        it.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
