@@ -2,7 +2,7 @@ name: Debug Build
 
 on:
   pull_request:
-    branches: [ master, develop ]
+    branches: [ master, develop, compose/develop ]
 
 jobs:
   build:
