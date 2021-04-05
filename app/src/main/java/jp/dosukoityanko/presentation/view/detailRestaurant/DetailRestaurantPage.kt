@@ -12,12 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.viewmodel.compose.viewModel
+import jp.dosukoityanko.R
 import jp.dosukoityanko.domain.entity.restaurantList.Restaurant
 import jp.dosukoityanko.presentation.viewmodel.restaurantList.RestaurantListViewModel
-import timber.log.Timber
 
 @Composable
 fun DetailRestaurantPage(viewModel: RestaurantListViewModel) {
@@ -27,19 +26,21 @@ fun DetailRestaurantPage(viewModel: RestaurantListViewModel) {
         ) {
             viewModel.isLoading.value = false
         }
-        ProgressIndicator(viewModel.isLoading.observeAsState(true).value)
+        ProgressIndicator(viewModel.isLoading.observeAsState().value)
     }
 }
 
 @Composable
-fun ProgressIndicator(isLoading: Boolean) {
+fun ProgressIndicator(isLoading: Boolean?) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        Timber.d("debug: isLoading $isLoading")
-        if (isLoading) {
-            CircularProgressIndicator(progress = 1.0F, modifier = Modifier.wrapContentSize())
+        if (isLoading == true) {
+            CircularProgressIndicator(
+                modifier = Modifier.wrapContentSize(),
+                color = colorResource(R.color.orange)
+            )
         }
     }
 }
@@ -75,20 +76,3 @@ fun DetailRestaurantBrowser(
     }
 }
 
-@Preview
-@Composable
-fun PreviewDetailRestaurantPage() {
-    DetailRestaurantPage(viewModel = viewModel())
-}
-
-@Preview
-@Composable
-fun PreviewProgressBar() {
-    ProgressIndicator(isLoading = true)
-}
-
-@Preview
-@Composable
-fun PreviewDetailRestaurantBrowser() {
-    DetailRestaurantBrowser(selectedRestaurant = null) {}
-}
