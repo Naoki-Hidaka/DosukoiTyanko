@@ -72,7 +72,7 @@ fun DetailRestaurantBrowser(
                         ViewGroup.LayoutParams.MATCH_PARENT
                     )
                 }
-            })
+            }
+        )
     }
 }
-
