@@ -18,6 +18,8 @@ class LikeListViewModel @Inject constructor(
     private val likeRestaurantRepository: LikeRestaurantRepository
 ) : ViewModel() {
 
+    val isLoading = MutableLiveData(true)
+
     private val _likeList: MutableStateFlow<List<Restaurant>> = MutableStateFlow(emptyList())
     val likeList: StateFlow<List<Restaurant>> = _likeList
 
