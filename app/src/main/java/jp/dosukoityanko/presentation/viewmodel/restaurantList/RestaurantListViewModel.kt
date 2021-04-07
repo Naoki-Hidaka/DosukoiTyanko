@@ -24,7 +24,7 @@ class RestaurantListViewModel @Inject constructor(
     private val restaurantListRepository: RestaurantListRepository
 ) : ViewModel() {
 
-    val isLoading = MutableLiveData(true)
+    val isLoading = MutableLiveData(false)
 
     private val _restaurantList = MutableStateFlow<Resource<List<Restaurant>>>(Resource.Empty)
     val restaurantList: StateFlow<Resource<List<Restaurant>>> = _restaurantList
@@ -67,11 +67,9 @@ class RestaurantListViewModel @Inject constructor(
         }
     }
 
-    fun setEmptyImageState(visibleState: Boolean) {
-        _emptyImageState.value = visibleState
-    }
-
     fun getRestaurant() {
+        _emptyImageState.value = false
+        isLoading.value = true
         finalCalledFunction.value = ::getRestaurant
         viewModelScope.launch {
             restaurantListRepository.getRestaurant(
@@ -81,6 +79,7 @@ class RestaurantListViewModel @Inject constructor(
             ).collect {
                 _restaurantList.value = it
             }
+            isLoading.value = false
         }
         _bottomSheetState.value = false
     }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -25,6 +26,7 @@ import jp.dosukoityanko.databinding.ItemRestaurantListBinding
 import jp.dosukoityanko.domain.entity.common.Resource
 import jp.dosukoityanko.domain.entity.restaurantList.Restaurant
 import jp.dosukoityanko.presentation.view.top.TopFragmentDirections
+import jp.dosukoityanko.presentation.view.util.ProgressIndicator
 import jp.dosukoityanko.presentation.view.util.showRetryDialog
 import jp.dosukoityanko.presentation.view.util.transitionPage
 import jp.dosukoityanko.presentation.viewmodel.restaurantList.RestaurantListViewModel
@@ -59,6 +61,12 @@ class RestaurantListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View = FragmentRestaurantListBinding.inflate(inflater, container, false).let {
+        it.progressIndicator.setContent {
+            ProgressIndicator(isLoading = viewModel.isLoading.observeAsState().value)
+        }
+        it.empty.setContent {
+            EmptyState(isVisible = viewModel.emptyImageState.observeAsState().value)
+        }
         lifecycleScope.launchWhenResumed {
             viewModel.restaurantList.collect { resource ->
                 when (resource) {
@@ -66,19 +74,14 @@ class RestaurantListFragment : Fragment() {
                         it.notFoundMessage.visibility = View.GONE
                     }
                     is Resource.InProgress -> {
-                        viewModel.setEmptyImageState(false)
                         it.notFoundMessage.visibility = View.GONE
-                        it.progressBar.visibility = View.VISIBLE
-                        it.emptyImage.visibility = View.GONE
                     }
                     is Resource.Success -> {
                         it.notFoundMessage.visibility = View.GONE
                         restaurantListAdapter.submitList(resource.extractData)
-                        it.progressBar.visibility = View.GONE
                     }
                     is Resource.ApiError -> {
                         it.notFoundMessage.visibility = View.VISIBLE
-                        it.progressBar.visibility = View.GONE
                         viewModel.finalCalledFunction.value?.let {
                             showRetryDialog(
                                 requireContext(),
@@ -89,7 +92,6 @@ class RestaurantListFragment : Fragment() {
                     }
                     is Resource.NetworkError -> {
                         it.notFoundMessage.visibility = View.GONE
-                        it.progressBar.visibility = View.GONE
                         viewModel.finalCalledFunction.value?.let {
                             showRetryDialog(
                                 requireContext(),

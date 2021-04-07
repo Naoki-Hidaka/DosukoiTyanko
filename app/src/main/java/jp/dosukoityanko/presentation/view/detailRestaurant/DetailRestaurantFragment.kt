@@ -20,6 +20,7 @@ class DetailRestaurantFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_detail_restaurant, container, false).apply {
+        viewModel.isLoading.value = true
         setHasOptionsMenu(true)
         findViewById<ComposeView>(R.id.composeView).setContent {
             MaterialTheme {

@@ -18,12 +18,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ProgressBar
-                android:id="@+id/progress_bar"
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/progressIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:indeterminateTint="@color/orange"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -54,18 +52,16 @@
                 android:layout_margin="16dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:src="@drawable/ic_search"
                 android:onClick="@{() -> viewModel.onSearchButtonClick()}"
+                android:src="@drawable/ic_search"
                 app:backgroundTint="@color/orange"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-            <ImageView
-                android:id="@+id/empty_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="fitCenter"
-                android:src="@drawable/tyanko"
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 app:isVisible="@{viewModel.emptyImageState}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
