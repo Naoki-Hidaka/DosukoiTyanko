@@ -27,14 +27,10 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/not_found_message"
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/notFoundText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/not_found_restaurant"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +48,7 @@
                 android:layout_margin="16dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="@{() -> viewModel.onSearchButtonClick()}"
+                android:onClick="@{() -> viewModel.onSearchFloatingButtonClick()}"
                 android:src="@drawable/ic_search"
                 app:backgroundTint="@color/orange"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -60,9 +56,8 @@
 
             <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/empty"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:isVisible="@{viewModel.emptyImageState}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

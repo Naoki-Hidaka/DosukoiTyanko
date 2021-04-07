@@ -2,6 +2,9 @@ package jp.dosukoityanko.domain.service
 
 import android.content.Context
 import androidx.room.Room
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.SettingsClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -54,4 +57,16 @@ object AppModule {
     fun provideLikeListRepository(
         likeRestaurantDao: LikeRestaurantDao
     ): LikeRestaurantRepository = LikeRestaurantRepositoryImpl(likeRestaurantDao)
+
+    @Provides
+    @Singleton
+    fun provideLocationService(
+        @ApplicationContext context: Context
+    ): FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
+
+    @Provides
+    @Singleton
+    fun provideSettingClient(
+        @ApplicationContext context: Context
+    ): SettingsClient = LocationServices.getSettingsClient(context)
 }
