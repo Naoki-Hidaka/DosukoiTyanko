@@ -4,12 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import androidx.compose.material.MaterialTheme
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.navigation.navGraphViewModels
 import jp.dosukoityanko.R
-import jp.dosukoityanko.databinding.FragmentLikeDetailBinding
 import jp.dosukoityanko.presentation.viewmodel.likeList.LikeListViewModel
 
 class LikeDetailFragment : Fragment() {
@@ -20,18 +19,11 @@ class LikeDetailFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FragmentLikeDetailBinding.inflate(layoutInflater, container, false).let {
-        it.lifecycleOwner = viewLifecycleOwner
-        it.viewModel = viewModel
-        it.webView.apply {
-            webViewClient = object : WebViewClient() {
-                override fun onPageFinished(view: WebView?, url: String?) {
-                    it.progressBar.visibility = View.GONE
-                }
+    ): View = inflater.inflate(R.layout.fragment_detail_restaurant, container, false).apply {
+        findViewById<ComposeView>(R.id.composeView).setContent {
+            MaterialTheme {
+                LikeDetailPage(viewModel)
             }
-            settings.supportZoom()
-            settings.builtInZoomControls = true
         }
-        it.root
     }
 }
