@@ -10,6 +10,7 @@ import jp.dosukoityanko.data.repository.restaurantList.RestaurantListRepository
 import jp.dosukoityanko.data.repository.restaurantList.RestaurantListRepositoryImpl
 import jp.dosukoityanko.domain.entity.createMockRestaurantList
 import kotlinx.coroutines.flow.dropWhile
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Test
