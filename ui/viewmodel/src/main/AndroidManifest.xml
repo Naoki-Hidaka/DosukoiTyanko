@@ -2,4 +2,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jp.dosukoityanko.ui.viewmodel">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 </manifest>

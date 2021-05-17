@@ -5,7 +5,7 @@ import android.content.Context
 
 fun showRetryDialog(
     context: Context,
-    retryAction: () -> Unit,
+    retryAction: (() -> Unit)?,
     title: String? = "エラー",
     message: String? = "エラーが発生しました",
 ) {
@@ -13,7 +13,7 @@ fun showRetryDialog(
         .setTitle(title)
         .setMessage(message)
         .setPositiveButton("リトライ") { dialog, _ ->
-            retryAction.invoke()
+            retryAction?.invoke()
             dialog.dismiss()
         }
         .setNegativeButton("キャンセル") { dialog, _ ->

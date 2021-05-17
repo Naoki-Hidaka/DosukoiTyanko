@@ -1,18 +1,19 @@
 package jp.dosukoityanko.ui.viewmodel.restaurantList
 
+import android.annotation.SuppressLint
 import android.location.Location
-import androidx.lifecycle.LiveData
+import android.os.Looper
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.location.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.dosukoityanko.data.entity.common.Amount
 import jp.dosukoityanko.data.entity.common.Distance
 import jp.dosukoityanko.data.entity.common.Resource
 import jp.dosukoityanko.data.entity.restaurantList.Restaurant
 import jp.dosukoityanko.data.repository.restaurantList.RestaurantListRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import jp.dosukoityanko.ui.viewmodel.util.NoCacheMutableLiveData
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -20,31 +21,40 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RestaurantListViewModel @Inject constructor(
-    private val restaurantListRepository: RestaurantListRepository
+    private val restaurantListRepository: RestaurantListRepository,
+    private val fusedLocationProviderClient: FusedLocationProviderClient,
+    private val settingsClient: SettingsClient
 ) : ViewModel() {
+    
+    private val locationRequest by lazy {
+        LocationRequest.create().apply { priority = LocationRequest.PRIORITY_HIGH_ACCURACY }
+    }
+    private val locationBuilder by lazy {
+        LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest).build()
+    }
 
-    private val _restaurantList = MutableStateFlow<Resource<List<Restaurant>>>(Resource.Empty)
-    val restaurantList: StateFlow<Resource<List<Restaurant>>> = _restaurantList
+    val onEvent = NoCacheMutableLiveData<ApiEvent>()
+    private val _restaurantList = MutableLiveData<List<Restaurant>>()
 
-    private val _selectedRestaurant = MutableLiveData<Restaurant>()
-    val selectedRestaurant: LiveData<Restaurant> = _selectedRestaurant
+    val selectedRestaurant = MutableLiveData<Restaurant>()
+    val emptyImageState = MutableLiveData(true)
+    val bottomSheetState = MutableLiveData(false)
+    val isLoading = MutableLiveData(false)
+    val currentLocation = MutableLiveData<Location>()
+    val isVisibleNotFoundMessage = MutableLiveData(false)
 
-    private val _emptyImageState = MutableLiveData(true)
-    val emptyImageState: LiveData<Boolean> = _emptyImageState
-
-    private val _bottomSheetState = MutableLiveData(false)
-    val bottomSheetState: LiveData<Boolean> = _bottomSheetState
+    fun onMenuButtonClick() {
+        bottomSheetState.value = true
+    }
 
     fun onSearchButtonClick() {
-        _bottomSheetState.value = !(_bottomSheetState.value ?: false)
+        getLocation()
     }
 
     val finalCalledFunction = MutableLiveData<() -> Unit>()
 
-    private val _location = MutableLiveData<Location>()
-
     private val _selectedDistance = MutableLiveData<Distance>()
-
     private val _selectedAmount = MutableLiveData<Amount>()
 
     fun onOneKilometerChecked() {
@@ -68,25 +78,55 @@ class RestaurantListViewModel @Inject constructor(
     }
 
     fun setEmptyImageState(visibleState: Boolean) {
-        _emptyImageState.value = visibleState
+        emptyImageState.value = visibleState
     }
 
-    fun getRestaurant() {
+    private fun getRestaurant() {
         finalCalledFunction.value = ::getRestaurant
         viewModelScope.launch {
             restaurantListRepository.getRestaurant(
-                _location.value,
+                currentLocation.value,
                 _selectedDistance.value,
                 _selectedAmount.value
             ).collect {
-                _restaurantList.value = it
+                handleEvent(it)
             }
         }
-        _bottomSheetState.value = false
+        bottomSheetState.value = false
+    }
+
+    private fun handleEvent(resource: Resource<List<Restaurant>>) {
+        when (resource) {
+            is Resource.Empty -> {
+                isVisibleNotFoundMessage.value = false
+                isLoading.value = false
+            }
+            is Resource.InProgress -> {
+                emptyImageState.value = false
+                isVisibleNotFoundMessage.value = false
+                isLoading.value = true
+            }
+            is Resource.Success -> {
+                isLoading.value = false
+                isVisibleNotFoundMessage.value = false
+                _restaurantList.value = resource.extractData
+                onEvent.setValue(ApiEvent.Success(resource.extractData))
+            }
+            is Resource.ApiError -> {
+                isVisibleNotFoundMessage.value = true
+                isLoading.value = false
+                onEvent.setValue(ApiEvent.Error(resource.errorBody.errorString()))
+            }
+            is Resource.NetworkError -> {
+                isVisibleNotFoundMessage.value = true
+                isLoading.value = false
+                onEvent.setValue(ApiEvent.Error(resource.errorMessage))
+            }
+        }
     }
 
     fun selectRestaurant(position: Int) {
-        _selectedRestaurant.value = restaurantList.value.extractData?.get(position)
+        selectedRestaurant.value = _restaurantList.value?.get(position)
     }
 
     fun clickLike(
@@ -103,11 +143,36 @@ class RestaurantListViewModel @Inject constructor(
         }
     }
 
-    fun setLocation(location: Location) {
-        _location.value = location
+    fun onCancelButtonClick() {
+        bottomSheetState.value = false
     }
 
-    fun onCancelButtonClick() {
-        _bottomSheetState.value = false
+    @SuppressLint("MissingPermission")
+    fun getLocation() {
+        settingsClient.checkLocationSettings(locationBuilder)
+            .addOnSuccessListener {
+                fusedLocationProviderClient.requestLocationUpdates(
+                    locationRequest,
+                    object : LocationCallback() {
+                        override fun onLocationResult(locationResult: LocationResult?) {
+                            locationResult?.lastLocation?.let {
+                                currentLocation.value = it
+                                getRestaurant()
+                            }
+                            fusedLocationProviderClient.removeLocationUpdates(this)
+                        }
+                    },
+                    Looper.getMainLooper()
+                )
+            }
+            .addOnFailureListener {
+                onEvent.setValue(ApiEvent.LocationError(it))
+            }
+    }
+
+    sealed class ApiEvent {
+        class Success(val restaurantList: List<Restaurant>?) : ApiEvent()
+        class Error(val errorText: String) : ApiEvent()
+        class LocationError(val exception: Exception) : ApiEvent()
     }
 }
