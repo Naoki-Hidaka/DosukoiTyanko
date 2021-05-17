@@ -47,9 +47,11 @@ object AppModule {
             .baseUrl(BuildConfig.BASE_URL)
             .client(
                 OkHttpClient.Builder()
-                    .addInterceptor(HttpLoggingInterceptor().apply {
-                        level = HttpLoggingInterceptor.Level.BODY
-                    })
+                    .addInterceptor(
+                        HttpLoggingInterceptor().apply {
+                            level = HttpLoggingInterceptor.Level.BODY
+                        }
+                    )
                     .build()
             )
             .addConverterFactory(JsonHandler.converter.run { GsonConverterFactory.create(this) })

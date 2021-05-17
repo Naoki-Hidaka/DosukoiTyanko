@@ -13,7 +13,7 @@ interface LikeRestaurantDao {
     fun getAll(): Flow<List<Restaurant>>
 
     @Query("select * from restaurant where id = :id")
-    suspend fun getRestaurant(id: Int): List<Restaurant>
+    suspend fun getRestaurant(id: String): Restaurant?
 
     @Insert
     suspend fun addRestaurant(restaurant: Restaurant)
