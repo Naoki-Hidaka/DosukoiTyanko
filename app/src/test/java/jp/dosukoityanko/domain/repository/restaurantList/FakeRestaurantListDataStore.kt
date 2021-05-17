@@ -1,9 +1,10 @@
 package jp.dosukoityanko.domain.repository.restaurantList
 
 import android.location.Location
-import jp.dosukoityanko.domain.entity.common.Distance
-import jp.dosukoityanko.domain.entity.common.Resource
-import jp.dosukoityanko.domain.entity.restaurantList.Restaurant
+import jp.dosukoityanko.data.entity.common.Distance
+import jp.dosukoityanko.data.entity.common.Resource
+import jp.dosukoityanko.data.entity.restaurantList.Restaurant
+import jp.dosukoityanko.data.repository.restaurantList.RestaurantListDataStore
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
