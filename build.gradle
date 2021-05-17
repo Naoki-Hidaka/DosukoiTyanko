@@ -1,21 +1,21 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = "1.4.30"
+    ext.kotlin_version = "1.5.0"
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.1.2"
+        classpath 'com.android.tools.build:gradle:4.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
 
-        def nav_version = "2.3.3"
+        def nav_version = "2.3.5"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
 
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.32-alpha'
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.35'
     }
 }
 
@@ -23,6 +23,76 @@ allprojects {
     repositories {
         google()
         jcenter()
+    }
+}
+
+subprojects {
+    afterEvaluate { subProject ->
+        if (subProject.hasProperty("android")) {
+
+            android {
+                signingConfigs {
+                    release {
+                        storeFile file('app/conf/dosukoi_tyanko.jks')
+                        storePassword 'dosukoi_tyanko-0626'
+                        keyAlias 'release'
+                        keyPassword 'dosukoi_tyanko-0626'
+                    }
+                }
+                compileSdkVersion 30
+                buildToolsVersion "30.0.3"
+
+                defaultConfig {
+                    minSdkVersion 24
+                    targetSdkVersion 30
+                    versionCode 8
+                    versionName "2.1.0"
+
+                    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+                    buildConfigField("String", "API_KEY", "\"1b2ce85f5b084352fb2b00054d0d2150\"")
+                    buildConfigField("String", "BASE_URL", "\"https://api.gnavi.co.jp/RestSearchAPI/v3/\"")
+
+                    javaCompileOptions {
+                        annotationProcessorOptions {
+                            arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+                        }
+                    }
+
+                    sourceSets {
+                        main {
+                            java {
+                                srcDirs += 'build/generated/source/navigation-args'
+                            }
+                        }
+                    }
+
+                    buildTypes {
+                        release {
+                            minifyEnabled false
+                            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                            signingConfig signingConfigs.release
+                        }
+                    }
+                    compileOptions {
+                        sourceCompatibility JavaVersion.VERSION_1_8
+                        targetCompatibility JavaVersion.VERSION_1_8
+                    }
+                    kotlinOptions {
+                        jvmTarget = '1.8'
+                    }
+
+                    buildFeatures {
+                        dataBinding true
+                    }
+
+                    testOptions {
+                        unitTests {
+                            includeAndroidResources = true
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
