@@ -1,6 +1,6 @@
 package jp.dosukoityanko.domain.entity
 
-import jp.dosukoityanko.domain.entity.restaurantList.*
+import jp.dosukoityanko.data.entity.restaurantList.*
 
 fun createMockRestaurantList(): List<Restaurant> {
     val mutableList = mutableListOf<Restaurant>()

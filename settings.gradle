@@ -1,2 +1,9 @@
 include ':app'
+include ':ui'
+include ':data'
 rootProject.name = "DosukoiTyanko"
+include ':ui:view'
+include ':ui:viewmodel'
+include ':data:repository'
+include ':data:entity'
+include ':data:api'

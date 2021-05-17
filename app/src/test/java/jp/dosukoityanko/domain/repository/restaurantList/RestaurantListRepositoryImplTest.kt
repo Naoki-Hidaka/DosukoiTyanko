@@ -2,12 +2,14 @@ package jp.dosukoityanko.domain.repository.restaurantList
 
 import com.google.common.truth.Truth.assertThat
 import io.mockk.mockk
-import jp.dosukoityanko.domain.entity.common.Amount
-import jp.dosukoityanko.domain.entity.common.Resource
+import jp.dosukoityanko.data.entity.common.Amount
+import jp.dosukoityanko.data.entity.common.Resource
+import jp.dosukoityanko.data.repository.likeList.LikeRestaurantDao
+import jp.dosukoityanko.data.repository.restaurantList.RestaurantListDataStore
+import jp.dosukoityanko.data.repository.restaurantList.RestaurantListRepository
+import jp.dosukoityanko.data.repository.restaurantList.RestaurantListRepositoryImpl
 import jp.dosukoityanko.domain.entity.createMockRestaurantList
-import jp.dosukoityanko.domain.repository.likeList.LikeRestaurantDao
 import kotlinx.coroutines.flow.dropWhile
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Test

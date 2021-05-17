@@ -1,6 +1,7 @@
 package jp.dosukoityanko.domain.entity.restaurantList
 
 import com.google.common.truth.Truth.assertThat
+import jp.dosukoityanko.data.entity.restaurantList.*
 import org.junit.Before
 import org.junit.Test
 
